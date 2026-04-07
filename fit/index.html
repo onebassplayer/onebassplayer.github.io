@@ -250,7 +250,7 @@
     setStep(1);
   }
   function submitToSheet(name,email) {
-    const SHEET_URL='YOUR_APPS_SCRIPT_URL_HERE';
+    const SHEET_URL='https://script.google.com/macros/s/AKfycbwqt-qIqf6sYHiyuZc6r7URZKC3rnoRv2IuqPeYZWI4n8Tz41ImY4xdQh4840Hp89zf/exec';
     fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,source:'fit-analyzer',timestamp:new Date().toISOString()})}).catch(()=>{});
   }
   async function runAnalysis() {
