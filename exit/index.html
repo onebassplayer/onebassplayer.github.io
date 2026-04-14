@@ -10,15 +10,15 @@
   <style>
     /* ── CONFIG ─────────────────────────────────────────── */
     :root {
-      --bg:        #f4f6fb;
-      --bg2:       #ffffff;
-      --bg3:       #eef0f7;
+      --bg:        #1a1f2e;
+      --bg2:       #222736;
+      --bg3:       #2a3045;
       --amber:     #667eea;
       --amber-dim: #4f63c8;
-      --amber-glow:rgba(102,126,234,0.12);
-      --text:      #2c3e50;
-      --muted:     #6b7a99;
-      --border:    rgba(102,126,234,0.18);
+      --amber-glow:rgba(102,126,234,0.15);
+      --text:      #f0f2f8;
+      --muted:     #8b9ab8;
+      --border:    rgba(102,126,234,0.2);
       --red:       #e05252;
       --yellow:    #e8a020;
       --green:     #4caf82;
@@ -64,11 +64,11 @@
     .site-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 32px 0 0;
+      justify-content: flex-start;
+      padding: 28px 0 0;
     }
     .logo {
-      height: 140px;
+      height: 120px;
       width: auto;
     }
     /* Fallback wordmark if logo doesn't load */
@@ -711,7 +711,6 @@
       padding: 40px 0 20px;
       font-size: 13px;
       color: var(--muted);
-      opacity: 0.6;
     }
     .site-footer a { color: var(--muted); text-decoration: none; }
     .site-footer a:hover { color: var(--amber); }
@@ -1017,7 +1016,7 @@
 
   <!-- FOOTER -->
   <footer class="site-footer">
-    <a href="https://moonshotconsultingdc.com">Moonshot Consulting DC</a> &nbsp;·&nbsp; Built for people ready to build
+    <a href="https://moonshotconsultingdc.com">Moonshot Consulting DC</a> &nbsp;·&nbsp; Built for people ready to build &nbsp;·&nbsp; <a href="https://moonshotconsultingdc.com">Visit our website →</a>
   </footer>
 
 </div>
@@ -1025,7 +1024,7 @@
 <script>
   /* ── CONFIG ───────────────────────────────────────────── */
   const PROXY_URL      = 'https://moonshot-proxy.onrender.com/v1/messages';
-  const APPS_SCRIPT_URL= 'https://script.google.com/macros/s/AKfycbwqt-qIqf6sYHiyuZc6r7URZKC3rnoRv2IuqPeYZWI4n8Tz41ImY4xdQh4840Hp89zf/exec'; // ← swap in before deploying
+  const APPS_SCRIPT_URL= 'YOUR_APPS_SCRIPT_WEBHOOK_URL'; // ← swap in before deploying
 
   /* ── STATE ────────────────────────────────────────────── */
   const state = {
