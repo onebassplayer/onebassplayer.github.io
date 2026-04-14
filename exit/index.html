@@ -67,9 +67,14 @@
       justify-content: flex-start;
       padding: 28px 0 0;
     }
+    .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+    }
     .logo {
-      height: 120px;
+      height: 200px;
       width: auto;
+      display: block;
     }
     /* Fallback wordmark if logo doesn't load */
     .logo-fallback {
@@ -731,13 +736,15 @@
 
   <!-- HEADER -->
   <header class="site-header">
-    <img
-      src="../fit/moonshot_icon_black_512.png"
-      alt="Moonshot Consulting"
-      class="logo"
-      onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block'"
-    >
-    <span class="logo-fallback" style="display:none;">MOONSHOT</span>
+    <div class="logo-wrap">
+      <img
+        src="../assets/MoonshotLogo.webp"
+        alt="Moonshot Consulting"
+        class="logo"
+        onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block'"
+      >
+      <span class="logo-fallback" style="display:none;">MOONSHOT</span>
+    </div>
   </header>
 
   <!-- HERO (Step 0) -->
@@ -1024,7 +1031,7 @@
 <script>
   /* ── CONFIG ───────────────────────────────────────────── */
   const PROXY_URL      = 'https://moonshot-proxy.onrender.com/v1/messages';
-  const APPS_SCRIPT_URL= 'YOUR_APPS_SCRIPT_WEBHOOK_URL'; // ← swap in before deploying
+  const APPS_SCRIPT_URL= 'https://script.google.com/macros/s/AKfycbwqt-qIqf6sYHiyuZc6r7URZKC3rnoRv2IuqPeYZWI4n8Tz41ImY4xdQh4840Hp89zf/exec';
 
   /* ── STATE ────────────────────────────────────────────── */
   const state = {
