@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moonshot Exit Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── CONFIG ─────────────────────────────────────────── */
+    :root {
+      --bg:        #060d1a;
+      --bg2:       #0d1b2e;
+      --bg3:       #112340;
+      --amber:     #e8a020;
+      --amber-dim: #b87d18;
+      --amber-glow:rgba(232,160,32,0.15);
+      --text:      #e8eef5;
+      --muted:     #6b88ab;
+      --border:    rgba(107,136,171,0.2);
+      --red:       #e05252;
+      --yellow:    #e8a020;
+      --green:     #4caf82;
+      --radius:    12px;
+      --transition:0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND TEXTURE ─────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232,160,32,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 90% 80%, rgba(76,175,130,0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────────── */
+    .shell {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 0 0;
+    }
+    .logo {
+      height: 52px;
+      width: auto;
+    }
+    /* Fallback wordmark if logo doesn't load */
+    .logo-fallback {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--amber);
+      text-transform: uppercase;
+    }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 56px 0 40px;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 7vw, 54px);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--amber);
+    }
+    .hero-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--amber);
+      color: #060d1a;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      padding: 16px 36px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition), transform 0.15s;
+    }
+    .hero-cta:hover { background: #f0b030; transform: translateY(-1px); }
+
+    /* ── PROGRESS BAR ───────────────────────────────────── */
+    .progress-wrap {
+      display: none;
+      margin-bottom: 36px;
+    }
+    .progress-wrap.visible { display: block; }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .progress-track {
+      height: 3px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--amber);
+      border-radius: 4px;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ── CARD ───────────────────────────────────────────── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      margin-bottom: 24px;
+      display: none;
+      animation: fadeUp 0.4s ease forwards;
+    }
+    .card.visible { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-step {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 10px;
+    }
+    .card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .card-hint {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ── FORM ELEMENTS ──────────────────────────────────── */
+    .field { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--amber);
+    }
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: var(--muted); opacity: 0.6; }
+
+    /* Radio options */
+    .radio-group { display: flex; flex-direction: column; gap: 10px; }
+    .radio-opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      font-size: 15px;
+    }
+    .radio-opt:hover { border-color: var(--amber-dim); }
+    .radio-opt.selected {
+      border-color: var(--amber);
+      background: var(--amber-glow);
+    }
+    .radio-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: border-color var(--transition), background var(--transition);
+      position: relative;
+    }
+    .radio-opt.selected .radio-dot {
+      border-color: var(--amber);
+      background: var(--amber);
+    }
+    .radio-opt.selected .radio-dot::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      background: #060d1a;
+      border-radius: 50%;
+    }
+
+    /* Checkbox group */
+    .check-group { display: flex; flex-direction: column; gap: 10px; }
+    .check-opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 16px;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      font-size: 15px;
+    }
+    .check-opt:hover { border-color: var(--amber-dim); }
+    .check-opt.selected {
+      border-color: var(--amber);
+      background: var(--amber-glow);
+    }
+    .check-box {
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      transition: all var(--transition);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .check-opt.selected .check-box {
+      border-color: var(--amber);
+      background: var(--amber);
+    }
+    .check-opt.selected .check-box::after {
+      content: '✓';
+      font-size: 11px;
+      color: #060d1a;
+      font-weight: 700;
+    }
+
+    /* Dollar inputs */
+    .dollar-wrap { position: relative; }
+    .dollar-wrap::before {
+      content: '$';
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--amber);
+      font-weight: 500;
+      font-size: 15px;
+    }
+    .dollar-wrap input { padding-left: 30px; }
+
+    /* Runway display */
+    .runway-display {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      text-align: center;
+      display: none;
+    }
+    .runway-display.visible { display: block; }
+    .runway-months {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .runway-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .runway-tier {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 20px;
+    }
+    .tier-red   { background: rgba(224,82,82,0.15);  color: var(--red);   border: 1px solid rgba(224,82,82,0.3); }
+    .tier-yellow{ background: rgba(232,160,32,0.15); color: var(--yellow);border: 1px solid rgba(232,160,32,0.3);}
+    .tier-green { background: rgba(76,175,130,0.15); color: var(--green); border: 1px solid rgba(76,175,130,0.3);}
+    .runway-message {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── NAV BUTTONS ────────────────────────────────────── */
+    .card-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 32px;
+      gap: 12px;
+    }
+    .btn-back {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-back:hover { border-color: var(--amber-dim); color: var(--text); }
+    .btn-next {
+      background: var(--amber);
+      color: #060d1a;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 13px 32px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background var(--transition), transform 0.15s;
+      flex: 1;
+      max-width: 220px;
+    }
+    .btn-next:hover { background: #f0b030; transform: translateY(-1px); }
+    .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    /* ── LOADING STATE ──────────────────────────────────── */
+    .loading-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 60px 40px;
+      text-align: center;
+      display: none;
+    }
+    .loading-card.visible { display: block; }
+    .spinner {
+      width: 44px; height: 44px;
+      border: 3px solid var(--border);
+      border-top-color: var(--amber);
+      border-radius: 50%;
+      margin: 0 auto 24px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .loading-sub { font-size: 14px; color: var(--muted); opacity: 0.6; }
+
+    /* ── RESULTS ────────────────────────────────────────── */
+    .results-card {
+      display: none;
+      animation: fadeUp 0.4s ease forwards;
+    }
+    .results-card.visible { display: block; }
+
+    /* Score section */
+    .score-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .score-ring {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 20px;
+    }
+    .score-ring svg { transform: rotate(-90deg); }
+    .score-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+    .score-ring-fill {
+      fill: none;
+      stroke: var(--amber);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 351.86;
+      stroke-dashoffset: 351.86;
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    .score-number {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .score-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .score-of { font-size: 12px; color: var(--muted); }
+    .score-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .score-narrative {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Survival math result */
+    .survival-result {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 40px;
+      margin-bottom: 20px;
+    }
+    .section-tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 14px;
+    }
+    .survival-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .survival-months-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .survival-details { flex: 1; }
+    .survival-tier-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+    }
+    .survival-insight {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-top: 12px;
+    }
+
+    /* Business concept */
+    .concept-card {
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(232,160,32,0.05) 100%);
+      border: 1px solid rgba(232,160,32,0.25);
+      border-radius: var(--radius);
+      padding: 32px 40px;
+      margin-bottom: 20px;
+    }
+    .concept-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 10px;
+    }
+    .concept-rationale {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Next steps */
+    .steps-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 40px;
+      margin-bottom: 20px;
+    }
+    .steps-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+    .step-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--amber-glow);
+      border: 1px solid rgba(232,160,32,0.3);
+      color: var(--amber);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-body { flex: 1; }
+    .step-title {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Resources */
+    .resources-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 40px;
+      margin-bottom: 20px;
+    }
+    .resource-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .resource-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg3);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color var(--transition);
+    }
+    .resource-item:hover { border-color: var(--amber-dim); }
+    .resource-arrow { color: var(--amber); font-size: 16px; margin-left: auto; }
+
+    /* CTAs */
+    .cta-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .cta-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .cta-section p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .cta-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .cta-primary {
+      display: block;
+      background: var(--amber);
+      color: #060d1a;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background var(--transition);
+    }
+    .cta-primary:hover { background: #f0b030; }
+    .cta-secondary {
+      display: block;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      padding: 13px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color var(--transition);
+    }
+    .cta-secondary:hover { border-color: var(--amber-dim); }
+
+    /* Share */
+    .share-section {
+      text-align: center;
+      padding: 24px 0 0;
+    }
+    .share-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 10px 22px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .share-btn:hover { border-color: var(--amber-dim); color: var(--text); }
+    .share-copied {
+      font-size: 13px;
+      color: var(--green);
+      margin-top: 8px;
+      display: none;
+    }
+
+    /* ── ERROR ──────────────────────────────────────────── */
+    .error-msg {
+      background: rgba(224,82,82,0.1);
+      border: 1px solid rgba(224,82,82,0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: var(--red);
+      margin-top: 16px;
+      display: none;
+    }
+    .error-msg.visible { display: block; }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    .site-footer {
+      text-align: center;
+      padding: 40px 0 20px;
+      font-size: 13px;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+    .site-footer a { color: var(--muted); text-decoration: none; }
+    .site-footer a:hover { color: var(--amber); }
+
+    /* ── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 520px) {
+      .card, .score-section, .survival-result,
+      .concept-card, .steps-card, .resources-card, .cta-section {
+        padding: 28px 22px;
+      }
+      .hero h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <img
+      src="../assets/moonshot-logo.png"
+      alt="Moonshot Consulting"
+      class="logo"
+      onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block'"
+    >
+    <span class="logo-fallback" style="display:none;">MOONSHOT</span>
+  </header>
+
+  <!-- HERO (Step 0) -->
+  <section class="hero" id="hero">
+    <p class="hero-eyebrow">Moonshot Exit Planner</p>
+    <h1>Is now your moment<br>to <em>build something</em>?</h1>
+    <p class="hero-sub">
+      Answer six honest questions. Get a readiness score, a custom business concept, your runway math, and a clear next move.
+    </p>
+    <button class="hero-cta" onclick="startPlanner()">Start your plan →</button>
+  </section>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-meta">
+      <span id="progressLabel">Step 1 of 6</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- STEP 1: Email gate -->
+  <div class="card" id="step1">
+    <p class="card-step">Step 1 of 6</p>
+    <h2>Let's start with you.</h2>
+    <p class="card-hint">Your results will be sent here. No spam — just your plan.</p>
+    <div class="field">
+      <label>First name</label>
+      <input type="text" id="firstName" placeholder="Your first name" />
+    </div>
+    <div class="field">
+      <label>Email address</label>
+      <input type="email" id="emailInput" placeholder="you@email.com" />
+    </div>
+    <div class="error-msg" id="step1Error">Please enter your name and a valid email.</div>
+    <div class="card-nav">
+      <div></div>
+      <button class="btn-next" onclick="goStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Emotional framing -->
+  <div class="card" id="step2">
+    <p class="card-step">Step 2 of 6</p>
+    <h2>What's really driving this?</h2>
+    <p class="card-hint">Be honest with yourself. This shapes everything.</p>
+    <div class="radio-group" id="motivationGroup">
+      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'toward')">
+        <div class="radio-dot"></div>
+        Running <strong style="margin-left:4px">toward</strong> something — I have a real pull toward building
+      </div>
+      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'from')">
+        <div class="radio-dot"></div>
+        Running <strong style="margin-left:4px">from</strong> something — the job market or my job is broken
+      </div>
+      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'both')">
+        <div class="radio-dot"></div>
+        Both — I'm done with what I have AND pulled toward something new
+      </div>
+      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'unsure')">
+        <div class="radio-dot"></div>
+        Honestly not sure yet
+      </div>
+    </div>
+    <div class="error-msg" id="step2Error">Please select an option.</div>
+    <div class="card-nav">
+      <button class="btn-back" onclick="goStep(1)">← Back</button>
+      <button class="btn-next" onclick="goStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Skills -->
+  <div class="card" id="step3">
+    <p class="card-step">Step 3 of 6</p>
+    <h2>What have people actually paid you to do?</h2>
+    <p class="card-hint">Think about the last 5 years. Not your job title — what specific things did people or companies pay for that you delivered?</p>
+    <div class="field">
+      <textarea id="skillsInput" placeholder="e.g. Helped SaaS companies hire their first 10 sales reps. Led product launches. Built and managed remote teams. Closed enterprise deals. Wrote content that drove leads..."></textarea>
+    </div>
+    <div class="error-msg" id="step3Error">Please describe your skills before continuing.</div>
+    <div class="card-nav">
+      <button class="btn-back" onclick="goStep(2)">← Back</button>
+      <button class="btn-next" onclick="goStep(4)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Market validation -->
+  <div class="card" id="step4">
+    <p class="card-step">Step 4 of 6</p>
+    <h2>Have you tested any business ideas?</h2>
+    <p class="card-hint">Even a conversation counts. What happened when you put something out there?</p>
+    <div class="radio-group" id="validationGroup">
+      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'yes_paid')">
+        <div class="radio-dot"></div>
+        Yes — someone has already paid me or expressed real intent to pay
+      </div>
+      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'yes_interest')">
+        <div class="radio-dot"></div>
+        I've talked to people and gotten strong interest but no money yet
+      </div>
+      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'no_idea')">
+        <div class="radio-dot"></div>
+        I have an idea but haven't tested it yet
+      </div>
+      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'no_idea_yet')">
+        <div class="radio-dot"></div>
+        I don't have a specific idea yet
+      </div>
+    </div>
+    <div class="field" style="margin-top:16px">
+      <label>Tell me more (optional)</label>
+      <textarea id="validationDetail" placeholder="What happened? What did you try? What did people say?" style="min-height:80px"></textarea>
+    </div>
+    <div class="error-msg" id="step4Error">Please select an option.</div>
+    <div class="card-nav">
+      <button class="btn-back" onclick="goStep(3)">← Back</button>
+      <button class="btn-next" onclick="goStep(5)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Constraints -->
+  <div class="card" id="step5">
+    <p class="card-step">Step 5 of 6</p>
+    <h2>What are your real constraints?</h2>
+    <p class="card-hint">Select everything that applies. This shapes what kind of business actually works for you.</p>
+    <div class="check-group" id="constraintGroup">
+      <div class="check-opt" onclick="toggleCheck(this, 'remote')">
+        <div class="check-box"></div>
+        I need to work remotely — no in-person client work
+      </div>
+      <div class="check-opt" onclick="toggleCheck(this, 'noncompete')">
+        <div class="check-box"></div>
+        I'm under a non-compete or NDA that limits what I can do
+      </div>
+      <div class="check-opt" onclick="toggleCheck(this, 'no_calls')">
+        <div class="check-box"></div>
+        I can't do regular client calls (schedule, caregiving, etc.)
+      </div>
+      <div class="check-opt" onclick="toggleCheck(this, 'health_insurance')">
+        <div class="check-box"></div>
+        I need health insurance — can't go uninsured while building
+      </div>
+      <div class="check-opt" onclick="toggleCheck(this, 'dependents')">
+        <div class="check-box"></div>
+        I have dependents — I can't take big income risks
+      </div>
+      <div class="check-opt" onclick="toggleCheck(this, 'none')">
+        <div class="check-box"></div>
+        None of these apply — I have real flexibility
+      </div>
+    </div>
+    <div class="field" style="margin-top:16px">
+      <label>Anything else? (optional)</label>
+      <input type="text" id="constraintOther" placeholder="e.g. I need to keep my current job while building..." />
+    </div>
+    <div class="card-nav">
+      <button class="btn-back" onclick="goStep(4)">← Back</button>
+      <button class="btn-next" onclick="goStep(6)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: Survival math -->
+  <div class="card" id="step6">
+    <p class="card-step">Step 6 of 6</p>
+    <h2>Let's run the numbers.</h2>
+    <p class="card-hint">Be real here. Savings you'd actually use to fund a transition — not your emergency fund.</p>
+    <div class="field">
+      <label>Available savings / funds you'd use to build</label>
+      <div class="dollar-wrap">
+        <input type="number" id="savingsInput" placeholder="0" min="0" oninput="calcRunway()" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Your monthly personal expenses (everything)</label>
+      <div class="dollar-wrap">
+        <input type="number" id="burnInput" placeholder="0" min="0" oninput="calcRunway()" />
+      </div>
+    </div>
+
+    <div class="runway-display" id="runwayDisplay">
+      <div class="runway-months" id="runwayMonths">—</div>
+      <div class="runway-label">months of runway</div>
+      <div class="runway-tier" id="runwayTier"></div>
+      <div class="runway-message" id="runwayMessage"></div>
+    </div>
+
+    <div class="error-msg" id="step6Error">Please enter both numbers before continuing.</div>
+    <div class="card-nav">
+      <button class="btn-back" onclick="goStep(5)">← Back</button>
+      <button class="btn-next" id="analyzeBtn" onclick="runAnalysis()">Build my plan →</button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-card" id="loadingCard">
+    <div class="spinner"></div>
+    <p class="loading-text">Building your plan...</p>
+    <p class="loading-sub">This takes about 20 seconds.</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-card" id="resultsCard">
+
+    <!-- Score -->
+    <div class="score-section">
+      <p class="card-step">Your Readiness Score</p>
+      <div class="score-ring">
+        <svg viewBox="0 0 120 120" width="140" height="140">
+          <circle class="score-ring-bg" cx="60" cy="60" r="56"/>
+          <circle class="score-ring-fill" id="scoreRingFill" cx="60" cy="60" r="56"/>
+        </svg>
+        <div class="score-number">
+          <span class="score-val" id="scoreVal">—</span>
+          <span class="score-of">/100</span>
+        </div>
+      </div>
+      <p class="score-label" id="scoreLabel"></p>
+      <p class="score-narrative" id="scoreNarrative"></p>
+    </div>
+
+    <!-- Survival math result -->
+    <div class="survival-result">
+      <p class="section-tag">Survival Math</p>
+      <div class="survival-row">
+        <div class="survival-months-big" id="resultRunwayMonths">—</div>
+        <div class="survival-details">
+          <div class="survival-tier-badge" id="resultRunwayTier"></div>
+          <div style="font-size:13px;color:var(--muted)">months of runway</div>
+        </div>
+      </div>
+      <p class="survival-insight" id="runwayInsight"></p>
+    </div>
+
+    <!-- Business concept -->
+    <div class="concept-card">
+      <p class="section-tag">Your Custom Business Concept</p>
+      <p class="concept-name" id="conceptName"></p>
+      <p class="concept-rationale" id="conceptRationale"></p>
+    </div>
+
+    <!-- Next 3 steps -->
+    <div class="steps-card">
+      <p class="section-tag">Your Next 3 Steps</p>
+      <ul class="steps-list" id="stepsList"></ul>
+    </div>
+
+    <!-- Resources -->
+    <div class="resources-card">
+      <p class="section-tag">Resources Worth Your Time</p>
+      <ul class="resource-list" id="resourceList"></ul>
+    </div>
+
+    <!-- CTAs -->
+    <div class="cta-section">
+      <h3>Ready to go faster?</h3>
+      <p>David works directly with people building a consulting or fractional practice. One conversation can save months of guessing.</p>
+      <div class="cta-grid">
+        <a href="https://calendly.com/moonshotconsultingdc-info/moonshot-introduction" target="_blank" class="cta-primary">
+          Book a free strategy call →
+        </a>
+        <a href="https://onebassplayer.github.io/fit" class="cta-secondary">
+          Not sure about leaving? Try the Job Fit Analyzer →
+        </a>
+      </div>
+    </div>
+
+    <!-- Share -->
+    <div class="share-section">
+      <button class="share-btn" onclick="shareResults()">Share your results</button>
+      <p class="share-copied" id="shareCopied">Link copied to clipboard.</p>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <a href="https://moonshotconsultingdc.com">Moonshot Consulting DC</a> &nbsp;·&nbsp; Built for people ready to build
+  </footer>
+
+</div>
+
+<script>
+  /* ── CONFIG ───────────────────────────────────────────── */
+  const PROXY_URL       = 'https://moonshot-proxy.onrender.com/v1/messages';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqt-qIqf6sYHiyuZc6r7URZKC3rnoRv2IuqPeYZWI4n8Tz41ImY4xdQh4840Hp89zf/exec';
+  const state = {
+    firstName: '',
+    email: '',
+    motivation: '',
+    skills: '',
+    validation: '',
+    validationDetail: '',
+    constraints: [],
+    constraintOther: '',
+    savings: 0,
+    burn: 0,
+    runwayMonths: 0,
+    runwayTier: ''
+  };
+
+  let currentStep = 0;
+
+  /* ── STEP NAVIGATION ──────────────────────────────────── */
+  function startPlanner() {
+    document.getElementById('hero').style.display = 'none';
+    document.getElementById('progressWrap').classList.add('visible');
+    showStep(1);
+  }
+
+  function showStep(n) {
+    for (let i = 1; i <= 6; i++) {
+      document.getElementById('step' + i).classList.remove('visible');
+    }
+    document.getElementById('step' + n).classList.add('visible');
+    updateProgress(n);
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress(n) {
+    const pct = Math.round(((n - 1) / 6) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = 'Step ' + n + ' of 6';
+    document.getElementById('progressPct').textContent = pct + '%';
+  }
+
+  function goStep(n) {
+    if (n > currentStep && !validateStep(currentStep)) return;
+    showStep(n);
+  }
+
+  /* ── VALIDATION ───────────────────────────────────────── */
+  function validateStep(n) {
+    hideError('step' + n + 'Error');
+    if (n === 1) {
+      const name  = document.getElementById('firstName').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      if (!name || !email || !email.includes('@')) {
+        showError('step1Error'); return false;
+      }
+      state.firstName = name;
+      state.email     = email;
+    }
+    if (n === 2) {
+      if (!state.motivation) { showError('step2Error'); return false; }
+    }
+    if (n === 3) {
+      const s = document.getElementById('skillsInput').value.trim();
+      if (s.length < 20) { showError('step3Error'); return false; }
+      state.skills = s;
+    }
+    if (n === 4) {
+      if (!state.validation) { showError('step4Error'); return false; }
+      state.validationDetail = document.getElementById('validationDetail').value.trim();
+    }
+    if (n === 5) {
+      state.constraintOther = document.getElementById('constraintOther').value.trim();
+    }
+    if (n === 6) {
+      const s = parseFloat(document.getElementById('savingsInput').value);
+      const b = parseFloat(document.getElementById('burnInput').value);
+      if (!s || !b || s <= 0 || b <= 0) { showError('step6Error'); return false; }
+      state.savings = s;
+      state.burn    = b;
+      state.runwayMonths = Math.floor(s / b);
+      state.runwayTier   = getTier(state.runwayMonths);
+    }
+    return true;
+  }
+
+  function showError(id) { document.getElementById(id).classList.add('visible'); }
+  function hideError(id) { document.getElementById(id).classList.remove('visible'); }
+
+  /* ── RADIO / CHECKBOX ─────────────────────────────────── */
+  function selectRadio(groupId, el, value) {
+    document.querySelectorAll('#' + groupId + ' .radio-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    if (groupId === 'motivationGroup') state.motivation = value;
+    if (groupId === 'validationGroup') state.validation = value;
+  }
+
+  const selectedConstraints = new Set();
+  function toggleCheck(el, value) {
+    if (value === 'none') {
+      // deselect everything else
+      document.querySelectorAll('#constraintGroup .check-opt').forEach(o => o.classList.remove('selected'));
+      selectedConstraints.clear();
+      el.classList.add('selected');
+      selectedConstraints.add('none');
+    } else {
+      document.querySelectorAll('#constraintGroup .check-opt[onclick*="none"]').forEach(o => o.classList.remove('selected'));
+      selectedConstraints.delete('none');
+      if (selectedConstraints.has(value)) {
+        selectedConstraints.delete(value);
+        el.classList.remove('selected');
+      } else {
+        selectedConstraints.add(value);
+        el.classList.add('selected');
+      }
+    }
+    state.constraints = [...selectedConstraints];
+  }
+
+  /* ── SURVIVAL MATH ────────────────────────────────────── */
+  function getTier(months) {
+    if (months <= 8)  return 'red';
+    if (months <= 15) return 'yellow';
+    return 'green';
+  }
+
+  function calcRunway() {
+    const s = parseFloat(document.getElementById('savingsInput').value);
+    const b = parseFloat(document.getElementById('burnInput').value);
+    if (!s || !b || s <= 0 || b <= 0) {
+      document.getElementById('runwayDisplay').classList.remove('visible');
+      return;
+    }
+    const months = Math.floor(s / b);
+    const tier   = getTier(months);
+    const msgs   = {
+      red:    "Your runway is tight. That doesn't mean don't go — it means go differently. We'll address this in your plan.",
+      yellow: "You have enough to test, not enough to fail slowly. Speed and focus matter more than anything.",
+      green:  "You have real runway. The question is how to use it — and we'll build that plan for you."
+    };
+    const tierLabels = { red: '⚠ Tight Runway', yellow: '~ Proceed with Focus', green: '✓ Strong Runway' };
+
+    document.getElementById('runwayMonths').textContent = months;
+    document.getElementById('runwayTier').textContent   = tierLabels[tier];
+    document.getElementById('runwayTier').className = 'runway-tier tier-' + tier;
+    document.getElementById('runwayMessage').textContent = msgs[tier];
+    document.getElementById('runwayDisplay').classList.add('visible');
+
+    state.savings      = s;
+    state.burn         = b;
+    state.runwayMonths = months;
+    state.runwayTier   = tier;
+  }
+
+  /* ── LEAD CAPTURE ─────────────────────────────────────── */
+  async function captureEmail() {
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_WEBHOOK_URL') return;
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName:    state.firstName,
+          email:        state.email,
+          motivation:   state.motivation,
+          runwayMonths: state.runwayMonths,
+          runwayTier:   state.runwayTier,
+          timestamp:    new Date().toISOString(),
+          source:       'exit-planner'
+        })
+      });
+    } catch (e) { /* silent */ }
+  }
+
+  /* ── ANALYSIS ─────────────────────────────────────────── */
+  async function runAnalysis() {
+    if (!validateStep(6)) return;
+
+    // Hide steps, show loading
+    document.getElementById('step6').classList.remove('visible');
+    document.getElementById('progressWrap').classList.remove('visible');
+    document.getElementById('loadingCard').classList.add('visible');
+
+    await captureEmail();
+
+    const constraintLabels = {
+      remote:         'needs remote-only work',
+      noncompete:     'under a non-compete or NDA',
+      no_calls:       "can't do regular client calls",
+      health_insurance:'needs health insurance from day one',
+      dependents:     'has dependents and can\'t take major income risks',
+      none:           'has full flexibility'
+    };
+    const constraintText = state.constraints.length
+      ? state.constraints.map(c => constraintLabels[c] || c).join(', ')
+      : 'no specific constraints mentioned';
+
+    const motivationMap = {
+      toward: 'running toward something — real pull to build',
+      from:   'running from something — job or market is broken',
+      both:   'both running toward and away from current situation',
+      unsure: 'not yet sure of direction'
+    };
+    const validationMap = {
+      yes_paid:     'has already received payment or firm commitment',
+      yes_interest: 'has tested and received strong interest but no money yet',
+      no_idea:      'has an idea but has not tested it',
+      no_idea_yet:  'does not yet have a specific idea'
+    };
+
+    const prompt = `You are a business advisor helping someone evaluate whether to leave their job and start a business. 
+
+User profile:
+- Name: ${state.firstName}
+- Motivation: ${motivationMap[state.motivation] || state.motivation}
+- Skills (what people have paid them to do): ${state.skills}
+- Market validation status: ${validationMap[state.validation] || state.validation}
+- Validation detail: ${state.validationDetail || 'none provided'}
+- Constraints: ${constraintText}
+- Additional constraints: ${state.constraintOther || 'none'}
+- Savings available: $${state.savings.toLocaleString()}
+- Monthly burn: $${state.burn.toLocaleString()}
+- Runway: ${state.runwayMonths} months (${state.runwayTier} tier: red=0-8mo, yellow=9-15mo, green=16+mo)
+
+Return ONLY valid JSON (no markdown, no backticks, no explanation) with exactly this structure:
+{
+  "readiness_score": <integer 0-100>,
+  "readiness_label": <string, e.g. "Ready to Launch" / "Almost Ready" / "Build Your Base" / "Not Yet">,
+  "narrative": <2-3 sentence honest assessment of their overall readiness>,
+  "business_concept": <a specific, named business concept tailored to their exact skills, constraints, and validation status — not generic>,
+  "business_concept_rationale": <2-3 sentences explaining exactly why this concept fits them>,
+  "next_steps": [
+    { "title": <string>, "description": <1-2 sentence specific action> },
+    { "title": <string>, "description": <1-2 sentence specific action> },
+    { "title": <string>, "description": <1-2 sentence specific action> }
+  ],
+  "resources": [
+    { "title": <string>, "url": <real, working URL>, "description": <one sentence> },
+    { "title": <string>, "url": <real, working URL>, "description": <one sentence> },
+    { "title": <string>, "url": <real, working URL>, "description": <one sentence> }
+  ],
+  "runway_insight": <2-3 sentences of honest, specific advice about their runway situation — use the red/yellow/green framing but make it personal to their numbers and situation>
+}
+
+Scoring guidance:
+- Market validation (yes_paid = +30, yes_interest = +15, no_idea = +5, no_idea_yet = 0)
+- Motivation (toward = +15, both = +10, from = +5, unsure = 0)
+- Runway (green = +20, yellow = +10, red = 0)
+- Skills specificity (very specific and marketable = +20, vague = +5)
+- Constraints (none = +5, many severe = -10)
+- Base: 10
+
+Be honest. Don't inflate scores. If runway is red and motivation is unclear, say so directly but constructively.
+For resources, use real URLs that actually exist — prefer wellknown books (amazon), communities (reddit, etc.), or tools relevant to their specific business concept.`;
+
+    try {
+      const response = await fetch(PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model:      'claude-sonnet-4-20250514',
+          max_tokens: 1500,
+          messages:   [{ role: 'user', content: prompt }]
+        })
+      });
+
+      if (!response.ok) throw new Error('API error ' + response.status);
+
+      const data = await response.json();
+      const raw  = data.content?.[0]?.text || '';
+      const clean= raw.replace(/```json|```/g, '').trim();
+      const result = JSON.parse(clean);
+
+      renderResults(result);
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById('loadingCard').classList.remove('visible');
+      document.getElementById('step6').classList.add('visible');
+      document.getElementById('progressWrap').classList.add('visible');
+      showError('step6Error');
+      document.getElementById('step6Error').textContent = 'Something went wrong. Please try again.';
+    }
+  }
+
+  /* ── RENDER RESULTS ───────────────────────────────────── */
+  function renderResults(r) {
+    document.getElementById('loadingCard').classList.remove('visible');
+
+    // Score ring
+    const score = Math.min(100, Math.max(0, r.readiness_score));
+    const circumference = 2 * Math.PI * 56; // 351.86
+    const offset = circumference - (score / 100) * circumference;
+
+    document.getElementById('scoreVal').textContent       = score;
+    document.getElementById('scoreLabel').textContent     = r.readiness_label || '';
+    document.getElementById('scoreNarrative').textContent = r.narrative || '';
+
+    // Animate ring
+    setTimeout(() => {
+      document.getElementById('scoreRingFill').style.strokeDashoffset = offset;
+    }, 200);
+
+    // Color ring by score
+    const ringEl = document.getElementById('scoreRingFill');
+    if      (score >= 70) ringEl.style.stroke = 'var(--green)';
+    else if (score >= 45) ringEl.style.stroke = 'var(--amber)';
+    else                  ringEl.style.stroke = 'var(--red)';
+
+    // Survival math
+    const tierLabels = { red: '⚠ Tight Runway', yellow: '~ Proceed with Focus', green: '✓ Strong Runway' };
+    document.getElementById('resultRunwayMonths').textContent  = state.runwayMonths;
+    const tierBadge = document.getElementById('resultRunwayTier');
+    tierBadge.textContent = tierLabels[state.runwayTier] || '';
+    tierBadge.className   = 'survival-tier-badge tier-' + state.runwayTier;
+    document.getElementById('runwayInsight').textContent = r.runway_insight || '';
+
+    // Business concept
+    document.getElementById('conceptName').textContent      = r.business_concept || '';
+    document.getElementById('conceptRationale').textContent = r.business_concept_rationale || '';
+
+    // Next steps
+    const stepsList = document.getElementById('stepsList');
+    stepsList.innerHTML = '';
+    (r.next_steps || []).forEach((s, i) => {
+      const li = document.createElement('li');
+      li.className = 'step-item';
+      li.innerHTML = `
+        <div class="step-num">${i + 1}</div>
+        <div class="step-body">
+          <div class="step-title">${s.title}</div>
+          <div class="step-desc">${s.description}</div>
+        </div>`;
+      stepsList.appendChild(li);
+    });
+
+    // Resources
+    const resList = document.getElementById('resourceList');
+    resList.innerHTML = '';
+    (r.resources || []).forEach(res => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <a href="${res.url}" target="_blank" class="resource-item">
+          <span>
+            <strong>${res.title}</strong><br>
+            <span style="color:var(--muted);font-size:13px">${res.description}</span>
+          </span>
+          <span class="resource-arrow">↗</span>
+        </a>`;
+      resList.appendChild(li);
+    });
+
+    document.getElementById('resultsCard').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── SHARE ────────────────────────────────────────────── */
+  function shareResults() {
+    const url = window.location.href.split('?')[0];
+    navigator.clipboard.writeText(url).then(() => {
+      const el = document.getElementById('shareCopied');
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 3000);
+    });
+  }
+</script>
+</body>
+</html>
