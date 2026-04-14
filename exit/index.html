@@ -10,15 +10,15 @@
   <style>
     /* ── CONFIG ─────────────────────────────────────────── */
     :root {
-      --bg:        #060d1a;
-      --bg2:       #0d1b2e;
-      --bg3:       #112340;
-      --amber:     #e8a020;
-      --amber-dim: #b87d18;
-      --amber-glow:rgba(232,160,32,0.15);
-      --text:      #e8eef5;
-      --muted:     #6b88ab;
-      --border:    rgba(107,136,171,0.2);
+      --bg:        #f4f6fb;
+      --bg2:       #ffffff;
+      --bg3:       #eef0f7;
+      --amber:     #667eea;
+      --amber-dim: #4f63c8;
+      --amber-glow:rgba(102,126,234,0.12);
+      --text:      #2c3e50;
+      --muted:     #6b7a99;
+      --border:    rgba(102,126,234,0.18);
       --red:       #e05252;
       --yellow:    #e8a020;
       --green:     #4caf82;
@@ -45,7 +45,7 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232,160,32,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,126,234,0.07) 0%, transparent 60%),
         radial-gradient(ellipse 40% 40% at 90% 80%, rgba(76,175,130,0.04) 0%, transparent 50%);
       pointer-events: none;
       z-index: 0;
@@ -68,7 +68,7 @@
       padding: 32px 0 0;
     }
     .logo {
-      height: 52px;
+      height: 140px;
       width: auto;
     }
     /* Fallback wordmark if logo doesn't load */
@@ -116,7 +116,7 @@
     .hero-cta {
       display: inline-block;
       background: var(--amber);
-      color: #060d1a;
+      color: #ffffff;
       font-weight: 600;
       font-size: 15px;
       letter-spacing: 0.04em;
@@ -126,7 +126,7 @@
       cursor: pointer;
       transition: background var(--transition), transform 0.15s;
     }
-    .hero-cta:hover { background: #f0b030; transform: translateY(-1px); }
+    .hero-cta:hover { background: var(--amber-dim); transform: translateY(-1px); }
 
     /* ── PROGRESS BAR ───────────────────────────────────── */
     .progress-wrap {
@@ -384,7 +384,7 @@
     .btn-back:hover { border-color: var(--amber-dim); color: var(--text); }
     .btn-next {
       background: var(--amber);
-      color: #060d1a;
+      color: #ffffff;
       font-family: 'DM Sans', sans-serif;
       font-weight: 600;
       font-size: 15px;
@@ -396,7 +396,7 @@
       flex: 1;
       max-width: 220px;
     }
-    .btn-next:hover { background: #f0b030; transform: translateY(-1px); }
+    .btn-next:hover { background: var(--amber-dim); transform: translateY(-1px); }
     .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
     /* ── LOADING STATE ──────────────────────────────────── */
@@ -646,7 +646,7 @@
     .cta-primary {
       display: block;
       background: var(--amber);
-      color: #060d1a;
+      color: #ffffff;
       font-weight: 600;
       font-size: 15px;
       padding: 15px;
@@ -654,7 +654,7 @@
       text-decoration: none;
       transition: background var(--transition);
     }
-    .cta-primary:hover { background: #f0b030; }
+    .cta-primary:hover { background: var(--amber-dim); }
     .cta-secondary {
       display: block;
       background: transparent;
@@ -1024,8 +1024,10 @@
 
 <script>
   /* ── CONFIG ───────────────────────────────────────────── */
-  const PROXY_URL       = 'https://moonshot-proxy.onrender.com/v1/messages';
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqt-qIqf6sYHiyuZc6r7URZKC3rnoRv2IuqPeYZWI4n8Tz41ImY4xdQh4840Hp89zf/exec';
+  const PROXY_URL      = 'https://moonshot-proxy.onrender.com/v1/messages';
+  const APPS_SCRIPT_URL= 'YOUR_APPS_SCRIPT_WEBHOOK_URL'; // ← swap in before deploying
+
+  /* ── STATE ────────────────────────────────────────────── */
   const state = {
     firstName: '',
     email: '',
@@ -1394,3 +1396,4 @@ For resources, use real URLs that actually exist — prefer wellknown books (ama
 </script>
 </body>
 </html>
+
