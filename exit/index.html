@@ -12,7 +12,7 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://moonshotexitplanner.com">
 
-  <!-- Open Graph (Facebook, LinkedIn) -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://moonshotexitplanner.com">
   <meta property="og:title" content="Moonshot Exit Planner | Should I Quit My Job and Start a Business?">
@@ -28,7 +28,7 @@
   <meta name="twitter:description" content="Answer 6 honest questions. Get a readiness score, a custom business concept, your runway math, and a clear next move.">
   <meta name="twitter:image" content="https://moonshotexitplanner.com/assets/MoonshotLogo.webp">
 
-  <!-- Structured Data (JSON-LD) -->
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -38,19 +38,12 @@
     "url": "https://moonshotexitplanner.com",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "author": {
       "@type": "Person",
       "name": "David Oliver",
       "url": "https://moonshotconsultingdc.com",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Moonshot Consulting"
-      }
+      "worksFor": { "@type": "Organization", "name": "Moonshot Consulting" }
     }
   }
   </script>
@@ -58,8 +51,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
-    /* ── CONFIG ─────────────────────────────────────────── */
     :root {
       --bg:        #1a1f2e;
       --bg2:       #222736;
@@ -77,7 +70,6 @@
       --transition:0.35s cubic-bezier(0.4,0,0.2,1);
     }
 
-    /* ── RESET ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -90,7 +82,6 @@
       overflow-x: hidden;
     }
 
-    /* ── BACKGROUND TEXTURE ─────────────────────────────── */
     body::before {
       content: '';
       position: fixed;
@@ -102,7 +93,6 @@
       z-index: 0;
     }
 
-    /* ── LAYOUT ─────────────────────────────────────────── */
     .shell {
       position: relative;
       z-index: 1;
@@ -111,23 +101,15 @@
       padding: 0 20px 80px;
     }
 
-    /* ── HEADER ─────────────────────────────────────────── */
+    /* ── HEADER ── */
     .site-header {
       display: flex;
       align-items: center;
       justify-content: flex-start;
       padding: 20px 0 0;
     }
-    .logo-wrap {
-      display: inline-flex;
-      align-items: center;
-    }
-    .logo {
-      height: 60px;
-      width: auto;
-      display: block;
-    }
-    /* Fallback wordmark if logo doesn't load */
+    .logo-wrap { display: inline-flex; align-items: center; }
+    .logo { height: 60px; width: auto; display: block; }
     .logo-fallback {
       font-family: 'Cormorant Garamond', serif;
       font-size: 22px;
@@ -137,80 +119,104 @@
       text-transform: uppercase;
     }
 
-    /* ── HERO ───────────────────────────────────────────── */
-    .hero {
+    /* ── MODE SELECTOR ── */
+    .mode-selector {
+      padding: 48px 0 0;
       text-align: center;
-      padding: 56px 0 40px;
     }
-    .hero-eyebrow {
+    .mode-eyebrow {
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--amber);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
-    .hero h1 {
+    .mode-selector h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(36px, 7vw, 54px);
+      font-size: clamp(34px, 6vw, 50px);
       font-weight: 700;
       line-height: 1.1;
-      color: var(--text);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
-    .hero h1 em {
-      font-style: italic;
-      color: var(--amber);
-    }
-    .hero-sub {
-      font-size: 17px;
+    .mode-selector h1 em { font-style: italic; color: var(--amber); }
+    .mode-sub {
+      font-size: 16px;
       color: var(--muted);
-      max-width: 500px;
-      margin: 0 auto 36px;
+      max-width: 480px;
+      margin: 0 auto 40px;
       line-height: 1.7;
     }
-    .hero-cta {
+    .mode-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 520px) { .mode-cards { grid-template-columns: 1fr; } }
+    .mode-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      cursor: pointer;
+      transition: border-color var(--transition), transform 0.15s;
+      text-align: left;
+    }
+    .mode-card:hover { border-color: var(--amber); transform: translateY(-2px); }
+    .mode-card.featured { border-color: rgba(102,126,234,0.5); }
+    .mode-icon { font-size: 28px; margin-bottom: 14px; }
+    .mode-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .mode-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--amber-glow);
+      color: var(--amber);
+      border: 1px solid rgba(102,126,234,0.3);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .mode-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+    .mode-time { font-size: 12px; color: var(--muted); opacity: 0.7; margin-bottom: 16px; }
+    .mode-btn {
       display: inline-block;
       background: var(--amber);
-      color: #ffffff;
+      color: #fff;
       font-weight: 600;
-      font-size: 15px;
-      letter-spacing: 0.04em;
-      padding: 16px 36px;
+      font-size: 14px;
+      padding: 11px 24px;
       border-radius: 8px;
       border: none;
       cursor: pointer;
-      transition: background var(--transition), transform 0.15s;
+      transition: background var(--transition);
+      width: 100%;
+      text-align: center;
     }
-    .hero-cta:hover { background: var(--amber-dim); transform: translateY(-1px); }
+    .mode-btn:hover { background: var(--amber-dim); }
+    .mode-btn.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .mode-btn.secondary:hover { border-color: var(--amber); background: var(--amber-glow); }
 
-    /* ── PROGRESS BAR ───────────────────────────────────── */
-    .progress-wrap {
-      display: none;
-      margin-bottom: 36px;
-    }
+    /* ── PROGRESS ── */
+    .progress-wrap { display: none; margin-bottom: 36px; }
     .progress-wrap.visible { display: block; }
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-    .progress-track {
-      height: 3px;
-      background: var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--amber);
-      border-radius: 4px;
-      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
-    }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    .progress-track { height: 3px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--amber); border-radius: 4px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
 
-    /* ── CARD ───────────────────────────────────────────── */
+    /* ── CARDS ── */
     .card {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -221,607 +227,410 @@
       animation: fadeUp 0.4s ease forwards;
     }
     .card.visible { display: block; }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    .card-step { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
+    .card h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; line-height: 1.25; margin-bottom: 8px; }
+    .card-hint { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
 
-    .card-step {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 10px;
-    }
-    .card h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 26px;
-      font-weight: 600;
-      line-height: 1.25;
-      margin-bottom: 8px;
-    }
-    .card-hint {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-
-    /* ── FORM ELEMENTS ──────────────────────────────────── */
+    /* ── FORM ── */
     .field { margin-bottom: 20px; }
-    .field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      margin-bottom: 8px;
-      letter-spacing: 0.02em;
+    .field label { display: block; font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.02em; }
+    .field input, .field textarea, .field select {
+      width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 13px 16px;
+      outline: none; transition: border-color var(--transition);
     }
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      padding: 13px 16px;
-      outline: none;
-      transition: border-color var(--transition);
-    }
-    .field input:focus,
-    .field textarea:focus {
-      border-color: var(--amber);
-    }
-    .field textarea {
-      min-height: 110px;
-      resize: vertical;
-      line-height: 1.6;
-    }
-    .field input::placeholder,
-    .field textarea::placeholder { color: var(--muted); opacity: 0.6; }
+    .field input:focus, .field textarea:focus { border-color: var(--amber); }
+    .field textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+    .field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: 0.6; }
 
-    /* Radio options */
     .radio-group { display: flex; flex-direction: column; gap: 10px; }
     .radio-opt {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      cursor: pointer;
-      transition: border-color var(--transition), background var(--transition);
-      font-size: 15px;
+      display: flex; align-items: center; gap: 12px; background: var(--bg3);
+      border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+      cursor: pointer; transition: border-color var(--transition), background var(--transition); font-size: 15px;
     }
     .radio-opt:hover { border-color: var(--amber-dim); }
-    .radio-opt.selected {
-      border-color: var(--amber);
-      background: var(--amber-glow);
-    }
-    .radio-dot {
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      flex-shrink: 0;
-      transition: border-color var(--transition), background var(--transition);
-      position: relative;
-    }
-    .radio-opt.selected .radio-dot {
-      border-color: var(--amber);
-      background: var(--amber);
-    }
-    .radio-opt.selected .radio-dot::after {
-      content: '';
-      position: absolute;
-      inset: 3px;
-      background: #060d1a;
-      border-radius: 50%;
-    }
+    .radio-opt.selected { border-color: var(--amber); background: var(--amber-glow); }
+    .radio-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; transition: border-color var(--transition), background var(--transition); position: relative; }
+    .radio-opt.selected .radio-dot { border-color: var(--amber); background: var(--amber); }
+    .radio-opt.selected .radio-dot::after { content: ''; position: absolute; inset: 3px; background: #060d1a; border-radius: 50%; }
 
-    /* Checkbox group */
     .check-group { display: flex; flex-direction: column; gap: 10px; }
-    .check-opt {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 13px 16px;
-      cursor: pointer;
-      transition: border-color var(--transition), background var(--transition);
-      font-size: 15px;
-    }
+    .check-opt { display: flex; align-items: center; gap: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; cursor: pointer; transition: border-color var(--transition), background var(--transition); font-size: 15px; }
     .check-opt:hover { border-color: var(--amber-dim); }
-    .check-opt.selected {
-      border-color: var(--amber);
-      background: var(--amber-glow);
-    }
-    .check-box {
-      width: 18px; height: 18px;
-      border-radius: 4px;
-      border: 2px solid var(--border);
-      flex-shrink: 0;
-      transition: all var(--transition);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .check-opt.selected .check-box {
-      border-color: var(--amber);
-      background: var(--amber);
-    }
-    .check-opt.selected .check-box::after {
-      content: '✓';
-      font-size: 11px;
-      color: #060d1a;
-      font-weight: 700;
-    }
+    .check-opt.selected { border-color: var(--amber); background: var(--amber-glow); }
+    .check-box { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--border); flex-shrink: 0; transition: all var(--transition); display: flex; align-items: center; justify-content: center; }
+    .check-opt.selected .check-box { border-color: var(--amber); background: var(--amber); }
+    .check-opt.selected .check-box::after { content: '✓'; font-size: 11px; color: #060d1a; font-weight: 700; }
 
-    /* Dollar inputs */
     .dollar-wrap { position: relative; }
-    .dollar-wrap::before {
-      content: '$';
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--amber);
-      font-weight: 500;
-      font-size: 15px;
-    }
+    .dollar-wrap::before { content: '$'; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--amber); font-weight: 500; font-size: 15px; }
     .dollar-wrap input { padding-left: 30px; }
 
-    /* Runway display */
-    .runway-display {
-      margin-top: 24px;
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg3);
-      text-align: center;
-      display: none;
-    }
+    .runway-display { margin-top: 24px; padding: 20px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg3); text-align: center; display: none; }
     .runway-display.visible { display: block; }
-    .runway-months {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 52px;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .runway-label {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .runway-tier {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 20px;
-    }
+    .runway-months { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+    .runway-label { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+    .runway-tier { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; }
     .tier-red   { background: rgba(224,82,82,0.15);  color: var(--red);   border: 1px solid rgba(224,82,82,0.3); }
     .tier-yellow{ background: rgba(232,160,32,0.15); color: var(--yellow);border: 1px solid rgba(232,160,32,0.3);}
     .tier-green { background: rgba(76,175,130,0.15); color: var(--green); border: 1px solid rgba(76,175,130,0.3);}
-    .runway-message {
-      margin-top: 12px;
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+    .runway-message { margin-top: 12px; font-size: 14px; color: var(--muted); line-height: 1.6; }
 
-    /* ── NAV BUTTONS ────────────────────────────────────── */
-    .card-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 32px;
-      gap: 12px;
-    }
-    .btn-back {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
+    /* ── NAV BUTTONS ── */
+    .card-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; gap: 12px; }
+    .btn-back { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: all var(--transition); }
     .btn-back:hover { border-color: var(--amber-dim); color: var(--text); }
-    .btn-next {
-      background: var(--amber);
-      color: #ffffff;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      padding: 13px 32px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background var(--transition), transform 0.15s;
-      flex: 1;
-      max-width: 220px;
-    }
+    .btn-next { background: var(--amber); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; padding: 13px 32px; border: none; border-radius: 8px; cursor: pointer; transition: background var(--transition), transform 0.15s; flex: 1; max-width: 220px; }
     .btn-next:hover { background: var(--amber-dim); transform: translateY(-1px); }
     .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-    /* ── LOADING STATE ──────────────────────────────────── */
-    .loading-card {
+    /* ── DEEP DIVE CHAT ── */
+    .deep-dive-wrap { display: none; }
+    .deep-dive-wrap.visible { display: block; }
+
+    .chat-header {
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 60px 40px;
-      text-align: center;
+      padding: 24px 32px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .chat-header-icon { font-size: 28px; }
+    .chat-header-text h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+    .chat-header-text p { font-size: 13px; color: var(--muted); }
+
+    /* Safari warning */
+    .safari-warning {
+      background: rgba(232,160,32,0.1);
+      border: 1px solid rgba(232,160,32,0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--yellow);
+      margin-bottom: 16px;
       display: none;
     }
-    .loading-card.visible { display: block; }
-    .spinner {
-      width: 44px; height: 44px;
-      border: 3px solid var(--border);
-      border-top-color: var(--amber);
+
+    .chat-messages {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      min-height: 320px;
+      max-height: 480px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .msg {
+      display: flex;
+      gap: 12px;
+      animation: fadeUp 0.3s ease forwards;
+    }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 32px; height: 32px;
       border-radius: 50%;
-      margin: 0 auto 24px;
-      animation: spin 0.8s linear infinite;
+      background: var(--amber-glow);
+      border: 1px solid rgba(102,126,234,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      color: var(--muted);
-      margin-bottom: 8px;
+    .msg.user .msg-avatar { background: var(--bg3); }
+    .msg-bubble {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 85%;
     }
-    .loading-sub { font-size: 14px; color: var(--muted); opacity: 0.6; }
+    .msg.user .msg-bubble {
+      background: var(--amber-glow);
+      border-color: rgba(102,126,234,0.3);
+      text-align: right;
+    }
 
-    /* ── RESULTS ────────────────────────────────────────── */
-    .results-card {
-      display: none;
-      animation: fadeUp 0.4s ease forwards;
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 8px 0;
     }
-    .results-card.visible { display: block; }
+    .typing-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+      animation: typingBounce 1.2s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
 
-    /* Score section */
-    .score-section {
+    /* Voice / text input area */
+    .chat-input-area {
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 36px 40px;
-      margin-bottom: 20px;
-      text-align: center;
+      padding: 20px 24px;
     }
-    .score-ring {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      margin: 0 auto 20px;
-    }
-    .score-ring svg { transform: rotate(-90deg); }
-    .score-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
-    .score-ring-fill {
-      fill: none;
-      stroke: var(--amber);
-      stroke-width: 8;
-      stroke-linecap: round;
-      stroke-dasharray: 351.86;
-      stroke-dashoffset: 351.86;
-      transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
-    }
-    .score-number {
-      position: absolute;
-      inset: 0;
+
+    .voice-controls {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-    }
-    .score-val {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 42px;
-      font-weight: 700;
-      line-height: 1;
-    }
-    .score-of { font-size: 12px; color: var(--muted); }
-    .score-label {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    .score-narrative {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 480px;
-      margin: 0 auto;
+      gap: 12px;
     }
 
-    /* Survival math result */
-    .survival-result {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px 40px;
-      margin-bottom: 20px;
-    }
-    .section-tag {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 14px;
-    }
-    .survival-row {
+    .ptt-btn {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--amber);
+      border: none;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 12px;
+      justify-content: center;
+      font-size: 28px;
+      transition: background var(--transition), transform 0.1s, box-shadow 0.1s;
+      box-shadow: 0 4px 20px rgba(102,126,234,0.3);
+      user-select: none;
+      -webkit-user-select: none;
     }
-    .survival-months-big {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 48px;
-      font-weight: 700;
-      line-height: 1;
+    .ptt-btn:active, .ptt-btn.recording {
+      background: var(--red);
+      transform: scale(0.95);
+      box-shadow: 0 2px 12px rgba(224,82,82,0.4);
     }
-    .survival-details { flex: 1; }
-    .survival-tier-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 20px;
-      margin-bottom: 6px;
-    }
-    .survival-insight {
-      font-size: 15px;
+    .ptt-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .ptt-label {
+      font-size: 13px;
       color: var(--muted);
-      line-height: 1.65;
+      text-align: center;
+    }
+    .ptt-label.recording { color: var(--red); }
+
+    .transcript-preview {
+      width: 100%;
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+      text-align: center;
+      min-height: 20px;
+      margin-top: 4px;
+    }
+
+    /* Text fallback input */
+    .text-input-row {
+      display: flex;
+      gap: 10px;
       margin-top: 12px;
     }
-
-    /* Business concept */
-    .concept-card {
-      background: linear-gradient(135deg, var(--bg2) 0%, rgba(232,160,32,0.05) 100%);
-      border: 1px solid rgba(232,160,32,0.25);
-      border-radius: var(--radius);
-      padding: 32px 40px;
-      margin-bottom: 20px;
-    }
-    .concept-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--amber);
-      margin-bottom: 10px;
-    }
-    .concept-rationale {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* Next steps */
-    .steps-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px 40px;
-      margin-bottom: 20px;
-    }
-    .steps-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
-    .step-item {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-    }
-    .step-num {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: var(--amber-glow);
-      border: 1px solid rgba(232,160,32,0.3);
-      color: var(--amber);
-      font-size: 13px;
-      font-weight: 600;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .step-body { flex: 1; }
-    .step-title {
-      font-weight: 600;
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
-    .step-desc {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    /* Resources */
-    .resources-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px 40px;
-      margin-bottom: 20px;
-    }
-    .resource-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
-    .resource-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
+    .text-input-row textarea {
+      flex: 1;
       background: var(--bg3);
-      border-radius: 8px;
-      font-size: 14px;
-      color: var(--text);
-      text-decoration: none;
       border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      padding: 12px 14px;
+      outline: none;
+      resize: none;
+      min-height: 48px;
+      max-height: 120px;
       transition: border-color var(--transition);
     }
+    .text-input-row textarea:focus { border-color: var(--amber); }
+    .text-input-row textarea::placeholder { color: var(--muted); opacity: 0.6; }
+    .send-btn {
+      background: var(--amber);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background var(--transition);
+      align-self: flex-end;
+    }
+    .send-btn:hover { background: var(--amber-dim); }
+    .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .input-toggle {
+      text-align: center;
+      margin-top: 12px;
+    }
+    .input-toggle button {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .input-toggle button:hover { color: var(--amber); }
+
+    /* ── LOADING ── */
+    .loading-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 60px 40px; text-align: center; display: none; }
+    .loading-card.visible { display: block; }
+    .spinner { width: 44px; height: 44px; border: 3px solid var(--border); border-top-color: var(--amber); border-radius: 50%; margin: 0 auto 24px; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--muted); margin-bottom: 8px; }
+    .loading-sub { font-size: 14px; color: var(--muted); opacity: 0.6; }
+
+    /* ── RESULTS ── */
+    .results-card { display: none; animation: fadeUp 0.4s ease forwards; }
+    .results-card.visible { display: block; }
+
+    .results-mode-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--amber-glow);
+      color: var(--amber);
+      border: 1px solid rgba(102,126,234,0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .score-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 40px; margin-bottom: 20px; text-align: center; }
+    .score-ring { position: relative; width: 140px; height: 140px; margin: 0 auto 20px; }
+    .score-ring svg { transform: rotate(-90deg); }
+    .score-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+    .score-ring-fill { fill: none; stroke: var(--amber); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 351.86; stroke-dashoffset: 351.86; transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
+    .score-number { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .score-val { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; line-height: 1; }
+    .score-of { font-size: 12px; color: var(--muted); }
+    .score-label { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+    .score-narrative { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 480px; margin: 0 auto; }
+
+    /* Deep Dive narrative block */
+    .narrative-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 40px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .narrative-card.visible { display: block; }
+    .narrative-body { font-size: 15px; color: var(--muted); line-height: 1.8; }
+
+    .survival-result { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 40px; margin-bottom: 20px; }
+    .section-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); margin-bottom: 14px; }
+    .survival-row { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+    .survival-months-big { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 700; line-height: 1; }
+    .survival-details { flex: 1; }
+    .survival-tier-badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 6px; }
+    .survival-insight { font-size: 15px; color: var(--muted); line-height: 1.65; margin-top: 12px; }
+
+    .concept-card { background: linear-gradient(135deg, var(--bg2) 0%, rgba(232,160,32,0.05) 100%); border: 1px solid rgba(232,160,32,0.25); border-radius: var(--radius); padding: 32px 40px; margin-bottom: 20px; }
+    .concept-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: var(--amber); margin-bottom: 10px; }
+    .concept-rationale { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+    .steps-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 40px; margin-bottom: 20px; }
+    .steps-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+    .step-item { display: flex; gap: 16px; align-items: flex-start; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--amber-glow); border: 1px solid rgba(232,160,32,0.3); color: var(--amber); font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .step-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    .resources-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px 40px; margin-bottom: 20px; }
+    .resource-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .resource-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg3); border-radius: 8px; font-size: 14px; color: var(--text); text-decoration: none; border: 1px solid var(--border); transition: border-color var(--transition); }
     .resource-item:hover { border-color: var(--amber-dim); }
     .resource-arrow { color: var(--amber); font-size: 16px; margin-left: auto; }
 
-    /* CTAs */
-    .cta-section {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px 40px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .cta-section h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .cta-section p {
-      font-size: 15px;
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
-    .cta-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .cta-primary {
-      display: block;
-      background: var(--amber);
-      color: #ffffff;
-      font-weight: 600;
-      font-size: 15px;
-      padding: 15px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background var(--transition);
-    }
+    .cta-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 40px; margin-bottom: 20px; text-align: center; }
+    .cta-section h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+    .cta-section p { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+    .cta-grid { display: flex; flex-direction: column; gap: 12px; }
+    .cta-primary { display: block; background: var(--amber); color: #fff; font-weight: 600; font-size: 15px; padding: 15px; border-radius: 8px; text-decoration: none; transition: background var(--transition); }
     .cta-primary:hover { background: var(--amber-dim); }
-    .cta-secondary {
-      display: block;
-      background: transparent;
-      color: var(--text);
-      font-size: 14px;
-      padding: 13px;
-      border-radius: 8px;
-      text-decoration: none;
-      border: 1px solid var(--border);
-      transition: border-color var(--transition);
-    }
+    .cta-secondary { display: block; background: transparent; color: var(--text); font-size: 14px; padding: 13px; border-radius: 8px; text-decoration: none; border: 1px solid var(--border); transition: border-color var(--transition); }
     .cta-secondary:hover { border-color: var(--amber-dim); }
 
-    /* Share */
-    .share-section {
-      text-align: center;
-      padding: 24px 0 0;
-    }
-    .share-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      padding: 10px 22px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
+    .share-section { text-align: center; padding: 24px 0 0; }
+    .share-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 10px 22px; border-radius: 20px; cursor: pointer; transition: all var(--transition); }
     .share-btn:hover { border-color: var(--amber-dim); color: var(--text); }
-    .share-copied {
-      font-size: 13px;
-      color: var(--green);
-      margin-top: 8px;
-      display: none;
-    }
+    .share-copied { font-size: 13px; color: var(--green); margin-top: 8px; display: none; }
 
-    /* ── ERROR ──────────────────────────────────────────── */
-    .error-msg {
-      background: rgba(224,82,82,0.1);
-      border: 1px solid rgba(224,82,82,0.3);
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 14px;
-      color: var(--red);
-      margin-top: 16px;
-      display: none;
-    }
+    .error-msg { background: rgba(224,82,82,0.1); border: 1px solid rgba(224,82,82,0.3); border-radius: 8px; padding: 12px 16px; font-size: 14px; color: var(--red); margin-top: 16px; display: none; }
     .error-msg.visible { display: block; }
 
-    /* ── FOOTER ─────────────────────────────────────────── */
-    .site-footer {
-      text-align: center;
-      padding: 40px 0 20px;
-      font-size: 13px;
-      color: var(--muted);
-    }
+    .site-footer { text-align: center; padding: 40px 0 20px; font-size: 13px; color: var(--muted); }
     .site-footer a { color: var(--muted); text-decoration: none; }
     .site-footer a:hover { color: var(--amber); }
 
-    /* ── RESPONSIVE ─────────────────────────────────────── */
     @media (max-width: 520px) {
-      .card, .score-section, .survival-result,
-      .concept-card, .steps-card, .resources-card, .cta-section {
-        padding: 28px 22px;
-      }
-      .hero h1 { font-size: 32px; }
+      .card, .score-section, .survival-result, .concept-card, .steps-card, .resources-card, .cta-section, .narrative-card { padding: 28px 22px; }
+      .chat-messages { min-height: 260px; max-height: 360px; }
     }
   </style>
 </head>
 <body>
-
 <div class="shell">
 
   <!-- HEADER -->
   <header class="site-header">
     <div class="logo-wrap">
-      <img
-  src="MoonshotLogo.webp"
-  alt="Moonshot Consulting"
-  class="logo"
-  onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block'"
->
+      <img src="MoonshotLogo.webp" alt="Moonshot Consulting" class="logo"
+        onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block'">
       <span class="logo-fallback" style="display:none;">MOONSHOT</span>
     </div>
   </header>
 
-  <!-- HERO (Step 0) -->
-  <section class="hero" id="hero">
-    <p class="hero-eyebrow">Moonshot Exit Planner</p>
+  <!-- MODE SELECTOR -->
+  <section class="mode-selector" id="modeSelector">
+    <p class="mode-eyebrow">Moonshot Exit Planner</p>
     <h1>Is now your moment<br>to <em>build something</em>?</h1>
-    <p class="hero-sub">
-      Answer six honest questions. Get a readiness score, a custom business concept, your runway math, and a clear next move.
-    </p>
-    <button class="hero-cta" onclick="startPlanner()">Start your plan →</button>
+    <p class="mode-sub">Choose how you want to explore your readiness. Both paths start with your email and end with a personalized plan.</p>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="startWizard()">
+        <div class="mode-icon">⚡</div>
+        <div class="mode-badge">Quick Plan</div>
+        <div class="mode-title">6-Step Wizard</div>
+        <div class="mode-desc">Answer six focused questions and get your readiness score, business concept, and survival math.</div>
+        <div class="mode-time">⏱ About 10 minutes</div>
+        <button class="mode-btn secondary">Start the wizard →</button>
+      </div>
+      <div class="mode-card featured" onclick="startDeepDive()">
+        <div class="mode-icon">🎙️</div>
+        <div class="mode-badge">Deep Dive</div>
+        <div class="mode-title">Voice Conversation</div>
+        <div class="mode-desc">Talk through your situation in your own words. I'll ask follow-up questions and build a richer plan from our conversation.</div>
+        <div class="mode-time">⏱ Open-ended — go as deep as you want</div>
+        <button class="mode-btn">Start the conversation →</button>
+      </div>
+    </div>
   </section>
 
-  <!-- PROGRESS -->
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-meta">
-      <span id="progressLabel">Step 1 of 6</span>
-      <span id="progressPct">0%</span>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill" style="width:0%"></div>
-    </div>
-  </div>
-
-  <!-- STEP 1: Email gate -->
-  <div class="card" id="step1">
-    <p class="card-step">Step 1 of 6</p>
+  <!-- EMAIL GATE (shared) -->
+  <div class="card" id="emailGate">
+    <p class="card-step" id="emailGateLabel">Step 1 of 6</p>
     <h2>Let's start with you.</h2>
     <p class="card-hint">Your results will be sent here. No spam — just your plan.</p>
     <div class="field">
@@ -832,80 +641,64 @@
       <label>Email address</label>
       <input type="email" id="emailInput" placeholder="you@email.com" />
     </div>
-    <div class="error-msg" id="step1Error">Please enter your name and a valid email.</div>
+    <div class="error-msg" id="emailError">Please enter your name and a valid email.</div>
     <div class="card-nav">
-      <div></div>
-      <button class="btn-next" onclick="goStep(2)">Continue →</button>
+      <button class="btn-back" onclick="backToModes()">← Back</button>
+      <button class="btn-next" id="emailNext" onclick="afterEmail()">Continue →</button>
     </div>
   </div>
 
-  <!-- STEP 2: Emotional framing -->
+  <!-- WIZARD STEPS -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-meta">
+      <span id="progressLabel">Step 2 of 6</span>
+      <span id="progressPct">16%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:16%"></div>
+    </div>
+  </div>
+
   <div class="card" id="step2">
     <p class="card-step">Step 2 of 6</p>
     <h2>What's really driving this?</h2>
     <p class="card-hint">Be honest with yourself. This shapes everything.</p>
     <div class="radio-group" id="motivationGroup">
-      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'toward')">
-        <div class="radio-dot"></div>
-        Running <strong style="margin-left:4px">toward</strong> something — I have a real pull toward building
-      </div>
-      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'from')">
-        <div class="radio-dot"></div>
-        Running <strong style="margin-left:4px">from</strong> something — the job market or my job is broken
-      </div>
-      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'both')">
-        <div class="radio-dot"></div>
-        Both — I'm done with what I have AND pulled toward something new
-      </div>
-      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'unsure')">
-        <div class="radio-dot"></div>
-        Honestly not sure yet
-      </div>
+      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'toward')"><div class="radio-dot"></div>Running <strong style="margin-left:4px">toward</strong> something — I have a real pull toward building</div>
+      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'from')"><div class="radio-dot"></div>Running <strong style="margin-left:4px">from</strong> something — the job market or my job is broken</div>
+      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'both')"><div class="radio-dot"></div>Both — I'm done with what I have AND pulled toward something new</div>
+      <div class="radio-opt" onclick="selectRadio('motivationGroup', this, 'unsure')"><div class="radio-dot"></div>Honestly not sure yet</div>
     </div>
     <div class="error-msg" id="step2Error">Please select an option.</div>
     <div class="card-nav">
-      <button class="btn-back" onclick="goStep(1)">← Back</button>
-      <button class="btn-next" onclick="goStep(3)">Continue →</button>
+      <button class="btn-back" onclick="goStep(null, 'email')">← Back</button>
+      <button class="btn-next" onclick="goStep(2, 3)">Continue →</button>
     </div>
   </div>
 
-  <!-- STEP 3: Skills -->
   <div class="card" id="step3">
     <p class="card-step">Step 3 of 6</p>
     <h2>What have people actually paid you to do?</h2>
     <p class="card-hint">Think about the last 5 years. Not your job title — what specific things did people or companies pay for that you delivered?</p>
     <div class="field">
-      <textarea id="skillsInput" placeholder="e.g. Helped SaaS companies hire their first 10 sales reps. Led product launches. Built and managed remote teams. Closed enterprise deals. Wrote content that drove leads..."></textarea>
+      <textarea id="skillsInput" placeholder="e.g. Helped SaaS companies hire their first 10 sales reps. Led product launches. Built and managed remote teams..."></textarea>
     </div>
     <div class="error-msg" id="step3Error">Please describe your skills before continuing.</div>
     <div class="card-nav">
-      <button class="btn-back" onclick="goStep(2)">← Back</button>
-      <button class="btn-next" onclick="goStep(4)">Continue →</button>
+      <button class="btn-back" onclick="goStep(3, 2)">← Back</button>
+      <button class="btn-next" onclick="goStep(3, 4)">Continue →</button>
     </div>
   </div>
 
-  <!-- STEP 4: Market validation -->
   <div class="card" id="step4">
     <p class="card-step">Step 4 of 6</p>
     <h2>Have you tested any business ideas?</h2>
     <p class="card-hint">Even a conversation counts. What happened when you put something out there?</p>
     <div class="radio-group" id="validationGroup">
-      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'yes_paid')">
-        <div class="radio-dot"></div>
-        Yes — someone has already paid me or expressed real intent to pay
-      </div>
-      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'yes_interest')">
-        <div class="radio-dot"></div>
-        I've talked to people and gotten strong interest but no money yet
-      </div>
-      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'no_idea')">
-        <div class="radio-dot"></div>
-        I have an idea but haven't tested it yet
-      </div>
-      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'no_idea_yet')">
-        <div class="radio-dot"></div>
-        I don't have a specific idea yet
-      </div>
+      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'yes_paid')"><div class="radio-dot"></div>Yes — someone has already paid me or expressed real intent to pay</div>
+      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'yes_interest')"><div class="radio-dot"></div>I've talked to people and gotten strong interest but no money yet</div>
+      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'no_idea')"><div class="radio-dot"></div>I have an idea but haven't tested it yet</div>
+      <div class="radio-opt" onclick="selectRadio('validationGroup', this, 'no_idea_yet')"><div class="radio-dot"></div>I don't have a specific idea yet</div>
     </div>
     <div class="field" style="margin-top:16px">
       <label>Tell me more (optional)</label>
@@ -913,81 +706,95 @@
     </div>
     <div class="error-msg" id="step4Error">Please select an option.</div>
     <div class="card-nav">
-      <button class="btn-back" onclick="goStep(3)">← Back</button>
-      <button class="btn-next" onclick="goStep(5)">Continue →</button>
+      <button class="btn-back" onclick="goStep(4, 3)">← Back</button>
+      <button class="btn-next" onclick="goStep(4, 5)">Continue →</button>
     </div>
   </div>
 
-  <!-- STEP 5: Constraints -->
   <div class="card" id="step5">
     <p class="card-step">Step 5 of 6</p>
     <h2>What are your real constraints?</h2>
     <p class="card-hint">Select everything that applies. This shapes what kind of business actually works for you.</p>
     <div class="check-group" id="constraintGroup">
-      <div class="check-opt" onclick="toggleCheck(this, 'remote')">
-        <div class="check-box"></div>
-        I need to work remotely — no in-person client work
-      </div>
-      <div class="check-opt" onclick="toggleCheck(this, 'noncompete')">
-        <div class="check-box"></div>
-        I'm under a non-compete or NDA that limits what I can do
-      </div>
-      <div class="check-opt" onclick="toggleCheck(this, 'no_calls')">
-        <div class="check-box"></div>
-        I can't do regular client calls (schedule, caregiving, etc.)
-      </div>
-      <div class="check-opt" onclick="toggleCheck(this, 'health_insurance')">
-        <div class="check-box"></div>
-        I need health insurance — can't go uninsured while building
-      </div>
-      <div class="check-opt" onclick="toggleCheck(this, 'dependents')">
-        <div class="check-box"></div>
-        I have dependents — I can't take big income risks
-      </div>
-      <div class="check-opt" onclick="toggleCheck(this, 'none')">
-        <div class="check-box"></div>
-        None of these apply — I have real flexibility
-      </div>
+      <div class="check-opt" onclick="toggleCheck(this, 'remote')"><div class="check-box"></div>I need to work remotely — no in-person client work</div>
+      <div class="check-opt" onclick="toggleCheck(this, 'noncompete')"><div class="check-box"></div>I'm under a non-compete or NDA that limits what I can do</div>
+      <div class="check-opt" onclick="toggleCheck(this, 'no_calls')"><div class="check-box"></div>I can't do regular client calls (schedule, caregiving, etc.)</div>
+      <div class="check-opt" onclick="toggleCheck(this, 'health_insurance')"><div class="check-box"></div>I need health insurance — can't go uninsured while building</div>
+      <div class="check-opt" onclick="toggleCheck(this, 'dependents')"><div class="check-box"></div>I have dependents — I can't take big income risks</div>
+      <div class="check-opt" onclick="toggleCheck(this, 'none')"><div class="check-box"></div>None of these apply — I have real flexibility</div>
     </div>
     <div class="field" style="margin-top:16px">
       <label>Anything else? (optional)</label>
       <input type="text" id="constraintOther" placeholder="e.g. I need to keep my current job while building..." />
     </div>
     <div class="card-nav">
-      <button class="btn-back" onclick="goStep(4)">← Back</button>
-      <button class="btn-next" onclick="goStep(6)">Continue →</button>
+      <button class="btn-back" onclick="goStep(5, 4)">← Back</button>
+      <button class="btn-next" onclick="goStep(5, 6)">Continue →</button>
     </div>
   </div>
 
-  <!-- STEP 6: Survival math -->
   <div class="card" id="step6">
     <p class="card-step">Step 6 of 6</p>
     <h2>Let's run the numbers.</h2>
     <p class="card-hint">Be real here. Savings you'd actually use to fund a transition — not your emergency fund.</p>
     <div class="field">
       <label>Available savings / funds you'd use to build</label>
-      <div class="dollar-wrap">
-        <input type="number" id="savingsInput" placeholder="0" min="0" oninput="calcRunway()" />
-      </div>
+      <div class="dollar-wrap"><input type="number" id="savingsInput" placeholder="0" min="0" oninput="calcRunway()" /></div>
     </div>
     <div class="field">
       <label>Your monthly personal expenses (everything)</label>
-      <div class="dollar-wrap">
-        <input type="number" id="burnInput" placeholder="0" min="0" oninput="calcRunway()" />
-      </div>
+      <div class="dollar-wrap"><input type="number" id="burnInput" placeholder="0" min="0" oninput="calcRunway()" /></div>
     </div>
-
     <div class="runway-display" id="runwayDisplay">
       <div class="runway-months" id="runwayMonths">—</div>
       <div class="runway-label">months of runway</div>
       <div class="runway-tier" id="runwayTier"></div>
       <div class="runway-message" id="runwayMessage"></div>
     </div>
-
     <div class="error-msg" id="step6Error">Please enter both numbers before continuing.</div>
     <div class="card-nav">
-      <button class="btn-back" onclick="goStep(5)">← Back</button>
-      <button class="btn-next" id="analyzeBtn" onclick="runAnalysis()">Build my plan →</button>
+      <button class="btn-back" onclick="goStep(6, 5)">← Back</button>
+      <button class="btn-next" onclick="runWizardAnalysis()">Build my plan →</button>
+    </div>
+  </div>
+
+  <!-- DEEP DIVE INTERFACE -->
+  <div class="deep-dive-wrap" id="deepDiveWrap">
+
+    <div class="safari-warning" id="safariWarning">
+      Voice input isn't available in Safari. You can type your responses below instead.
+    </div>
+
+    <div class="chat-header">
+      <div class="chat-header-icon">🎙️</div>
+      <div class="chat-header-text">
+        <h3>Deep Dive Conversation</h3>
+        <p>Hold the button to speak. Release to send. I'll guide you through everything.</p>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages"></div>
+
+    <div class="chat-input-area">
+      <!-- Voice controls -->
+      <div class="voice-controls" id="voiceControls">
+        <button class="ptt-btn" id="pttBtn"
+          onmousedown="startRecording()" onmouseup="stopRecording()"
+          ontouchstart="startRecording(event)" ontouchend="stopRecording(event)">
+          🎤
+        </button>
+        <div class="ptt-label" id="pttLabel">Hold to speak</div>
+        <div class="transcript-preview" id="transcriptPreview"></div>
+      </div>
+      <!-- Text fallback -->
+      <div class="text-input-row" id="textInputRow" style="display:none;">
+        <textarea id="textInput" placeholder="Type your response..." rows="2"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendText();}"></textarea>
+        <button class="send-btn" onclick="sendText()" id="sendBtn">→</button>
+      </div>
+      <div class="input-toggle" id="inputToggle">
+        <button onclick="toggleInputMode()">Switch to typing instead</button>
+      </div>
     </div>
   </div>
 
@@ -1000,9 +807,8 @@
 
   <!-- RESULTS -->
   <div class="results-card" id="resultsCard">
-
-    <!-- Score -->
     <div class="score-section">
+      <div class="results-mode-tag" id="resultsModeTag">Quick Plan</div>
       <p class="card-step">Your Readiness Score</p>
       <div class="score-ring">
         <svg viewBox="0 0 120 120" width="140" height="140">
@@ -1018,7 +824,12 @@
       <p class="score-narrative" id="scoreNarrative"></p>
     </div>
 
-    <!-- Survival math result -->
+    <!-- Deep Dive only: full narrative -->
+    <div class="narrative-card" id="narrativeCard">
+      <p class="section-tag">Your Full Story</p>
+      <div class="narrative-body" id="narrativeBody"></div>
+    </div>
+
     <div class="survival-result">
       <p class="section-tag">Survival Math</p>
       <div class="survival-row">
@@ -1031,48 +842,37 @@
       <p class="survival-insight" id="runwayInsight"></p>
     </div>
 
-    <!-- Business concept -->
     <div class="concept-card">
       <p class="section-tag">Your Custom Business Concept</p>
       <p class="concept-name" id="conceptName"></p>
       <p class="concept-rationale" id="conceptRationale"></p>
     </div>
 
-    <!-- Next 3 steps -->
     <div class="steps-card">
       <p class="section-tag">Your Next 3 Steps</p>
       <ul class="steps-list" id="stepsList"></ul>
     </div>
 
-    <!-- Resources -->
     <div class="resources-card">
       <p class="section-tag">Resources Worth Your Time</p>
       <ul class="resource-list" id="resourceList"></ul>
     </div>
 
-    <!-- CTAs -->
     <div class="cta-section">
       <h3>Ready to go faster?</h3>
       <p>David works directly with people building a consulting or fractional practice. One conversation can save months of guessing.</p>
       <div class="cta-grid">
-        <a href="https://calendly.com/moonshotconsultingdc-info/moonshot-introduction" target="_blank" class="cta-primary">
-          Book a free strategy call →
-        </a>
-        <a href="https://onebassplayer.github.io/fit" class="cta-secondary">
-          Not sure about leaving? Try the Job Fit Analyzer →
-        </a>
+        <a href="https://calendly.com/moonshotconsultingdc-info/moonshot-introduction" target="_blank" class="cta-primary">Book a free strategy call →</a>
+        <a href="https://onebassplayer.github.io/fit" class="cta-secondary">Not sure about leaving? Try the Job Fit Analyzer →</a>
       </div>
     </div>
 
-    <!-- Share -->
     <div class="share-section">
       <button class="share-btn" onclick="shareResults()">Share your results</button>
       <p class="share-copied" id="shareCopied">Link copied to clipboard.</p>
     </div>
-
   </div>
 
-  <!-- FOOTER -->
   <footer class="site-footer">
     <a href="https://moonshotconsultingdc.com">Moonshot Consulting DC</a> &nbsp;·&nbsp; Built for people ready to build &nbsp;·&nbsp; <a href="https://moonshotconsultingdc.com">Visit our website →</a>
   </footer>
@@ -1080,111 +880,131 @@
 </div>
 
 <script>
-  /* ── CONFIG ───────────────────────────────────────────── */
-  const PROXY_URL      = 'https://moonshot-proxy.onrender.com/v1/messages';
-  const APPS_SCRIPT_URL= 'https://script.google.com/macros/s/AKfycbwqt-qIqf6sYHiyuZc6r7URZKC3rnoRv2IuqPeYZWI4n8Tz41ImY4xdQh4840Hp89zf/exec';
+  /* ── CONFIG ── */
+  const PROXY_URL       = 'https://moonshot-proxy.onrender.com/v1/messages';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqt-qIqf6sYHiyuZc6r7URZKC3rnoRv2IuqPeYZWI4n8Tz41ImY4xdQh4840Hp89zf/exec';
 
-  /* ── STATE ────────────────────────────────────────────── */
+  /* ── STATE ── */
   const state = {
-    firstName: '',
-    email: '',
-    motivation: '',
-    skills: '',
-    validation: '',
-    validationDetail: '',
-    constraints: [],
-    constraintOther: '',
-    savings: 0,
-    burn: 0,
-    runwayMonths: 0,
-    runwayTier: ''
+    firstName: '', email: '',
+    mode: '',  // 'wizard' or 'deepdive'
+    motivation: '', skills: '', validation: '', validationDetail: '',
+    constraints: [], constraintOther: '',
+    savings: 0, burn: 0, runwayMonths: 0, runwayTier: ''
   };
 
-  let currentStep = 0;
+  /* ── SAFARI DETECTION ── */
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const hasSpeechRecognition = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+  let useVoice = hasSpeechRecognition && !isSafari;
 
-  /* ── STEP NAVIGATION ──────────────────────────────────── */
-  function startPlanner() {
-    document.getElementById('hero').style.display = 'none';
-    document.getElementById('progressWrap').classList.add('visible');
-    showStep(1);
+  /* ── MODE SELECTION ── */
+  function startWizard() {
+    state.mode = 'wizard';
+    document.getElementById('modeSelector').style.display = 'none';
+    document.getElementById('emailGateLabel').textContent = 'Step 1 of 6';
+    document.getElementById('emailGate').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function showStep(n) {
-    for (let i = 1; i <= 6; i++) {
-      document.getElementById('step' + i).classList.remove('visible');
+  function startDeepDive() {
+    state.mode = 'deepdive';
+    document.getElementById('modeSelector').style.display = 'none';
+    document.getElementById('emailGateLabel').textContent = 'Before we begin';
+    document.getElementById('emailGate').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function backToModes() {
+    document.getElementById('emailGate').classList.remove('visible');
+    document.getElementById('modeSelector').style.display = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function afterEmail() {
+    const name  = document.getElementById('firstName').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    if (!name || !email || !email.includes('@')) {
+      document.getElementById('emailError').classList.add('visible');
+      return;
     }
-    document.getElementById('step' + n).classList.add('visible');
-    updateProgress(n);
+    document.getElementById('emailError').classList.remove('visible');
+    state.firstName = name;
+    state.email     = email;
+    captureEmail();
+
+    document.getElementById('emailGate').classList.remove('visible');
+
+    if (state.mode === 'wizard') {
+      document.getElementById('progressWrap').classList.add('visible');
+      showWizardStep(2);
+    } else {
+      initDeepDive();
+    }
+  }
+
+  /* ── WIZARD ── */
+  let currentStep = 1;
+  const selectedConstraints = new Set();
+
+  function showWizardStep(n) {
+    [2,3,4,5,6].forEach(i => document.getElementById('step'+i).classList.remove('visible'));
+    if (n >= 2 && n <= 6) {
+      document.getElementById('step'+n).classList.add('visible');
+      const pct = Math.round(((n-1)/6)*100);
+      document.getElementById('progressFill').style.width = pct+'%';
+      document.getElementById('progressLabel').textContent = 'Step '+n+' of 6';
+      document.getElementById('progressPct').textContent = pct+'%';
+    }
     currentStep = n;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function updateProgress(n) {
-    const pct = Math.round(((n - 1) / 6) * 100);
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressLabel').textContent = 'Step ' + n + ' of 6';
-    document.getElementById('progressPct').textContent = pct + '%';
+  function goStep(from, to) {
+    if (to === 'email') {
+      [2,3,4,5,6].forEach(i => document.getElementById('step'+i).classList.remove('visible'));
+      document.getElementById('progressWrap').classList.remove('visible');
+      document.getElementById('emailGate').classList.add('visible');
+      return;
+    }
+    if (from && !validateWizardStep(from)) return;
+    showWizardStep(to);
   }
 
-  function goStep(n) {
-    if (n > currentStep && !validateStep(currentStep)) return;
-    showStep(n);
-  }
-
-  /* ── VALIDATION ───────────────────────────────────────── */
-  function validateStep(n) {
-    hideError('step' + n + 'Error');
-    if (n === 1) {
-      const name  = document.getElementById('firstName').value.trim();
-      const email = document.getElementById('emailInput').value.trim();
-      if (!name || !email || !email.includes('@')) {
-        showError('step1Error'); return false;
-      }
-      state.firstName = name;
-      state.email     = email;
-    }
-    if (n === 2) {
-      if (!state.motivation) { showError('step2Error'); return false; }
-    }
-    if (n === 3) {
+  function validateWizardStep(n) {
+    const errId = 'step'+n+'Error';
+    document.getElementById(errId).classList.remove('visible');
+    if (n===2 && !state.motivation) { document.getElementById(errId).classList.add('visible'); return false; }
+    if (n===3) {
       const s = document.getElementById('skillsInput').value.trim();
-      if (s.length < 20) { showError('step3Error'); return false; }
+      if (s.length < 20) { document.getElementById(errId).classList.add('visible'); return false; }
       state.skills = s;
     }
-    if (n === 4) {
-      if (!state.validation) { showError('step4Error'); return false; }
+    if (n===4) {
+      if (!state.validation) { document.getElementById(errId).classList.add('visible'); return false; }
       state.validationDetail = document.getElementById('validationDetail').value.trim();
     }
-    if (n === 5) {
-      state.constraintOther = document.getElementById('constraintOther').value.trim();
-    }
-    if (n === 6) {
+    if (n===5) { state.constraintOther = document.getElementById('constraintOther').value.trim(); }
+    if (n===6) {
       const s = parseFloat(document.getElementById('savingsInput').value);
       const b = parseFloat(document.getElementById('burnInput').value);
-      if (!s || !b || s <= 0 || b <= 0) { showError('step6Error'); return false; }
-      state.savings = s;
-      state.burn    = b;
-      state.runwayMonths = Math.floor(s / b);
+      if (!s || !b || s<=0 || b<=0) { document.getElementById(errId).classList.add('visible'); return false; }
+      state.savings = s; state.burn = b;
+      state.runwayMonths = Math.floor(s/b);
       state.runwayTier   = getTier(state.runwayMonths);
     }
     return true;
   }
 
-  function showError(id) { document.getElementById(id).classList.add('visible'); }
-  function hideError(id) { document.getElementById(id).classList.remove('visible'); }
-
-  /* ── RADIO / CHECKBOX ─────────────────────────────────── */
   function selectRadio(groupId, el, value) {
-    document.querySelectorAll('#' + groupId + ' .radio-opt').forEach(o => o.classList.remove('selected'));
+    document.querySelectorAll('#'+groupId+' .radio-opt').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
     if (groupId === 'motivationGroup') state.motivation = value;
     if (groupId === 'validationGroup') state.validation = value;
   }
 
-  const selectedConstraints = new Set();
   function toggleCheck(el, value) {
     if (value === 'none') {
-      // deselect everything else
       document.querySelectorAll('#constraintGroup .check-opt').forEach(o => o.classList.remove('selected'));
       selectedConstraints.clear();
       el.classList.add('selected');
@@ -1192,18 +1012,12 @@
     } else {
       document.querySelectorAll('#constraintGroup .check-opt[onclick*="none"]').forEach(o => o.classList.remove('selected'));
       selectedConstraints.delete('none');
-      if (selectedConstraints.has(value)) {
-        selectedConstraints.delete(value);
-        el.classList.remove('selected');
-      } else {
-        selectedConstraints.add(value);
-        el.classList.add('selected');
-      }
+      if (selectedConstraints.has(value)) { selectedConstraints.delete(value); el.classList.remove('selected'); }
+      else { selectedConstraints.add(value); el.classList.add('selected'); }
     }
     state.constraints = [...selectedConstraints];
   }
 
-  /* ── SURVIVAL MATH ────────────────────────────────────── */
   function getTier(months) {
     if (months <= 8)  return 'red';
     if (months <= 15) return 'yellow';
@@ -1213,227 +1027,315 @@
   function calcRunway() {
     const s = parseFloat(document.getElementById('savingsInput').value);
     const b = parseFloat(document.getElementById('burnInput').value);
-    if (!s || !b || s <= 0 || b <= 0) {
-      document.getElementById('runwayDisplay').classList.remove('visible');
-      return;
-    }
-    const months = Math.floor(s / b);
+    if (!s || !b || s<=0 || b<=0) { document.getElementById('runwayDisplay').classList.remove('visible'); return; }
+    const months = Math.floor(s/b);
     const tier   = getTier(months);
-    const msgs   = {
-      red:    "Your runway is tight. That doesn't mean don't go — it means go differently. We'll address this in your plan.",
-      yellow: "You have enough to test, not enough to fail slowly. Speed and focus matter more than anything.",
-      green:  "You have real runway. The question is how to use it — and we'll build that plan for you."
-    };
-    const tierLabels = { red: '⚠ Tight Runway', yellow: '~ Proceed with Focus', green: '✓ Strong Runway' };
-
+    const msgs   = { red: "Your runway is tight. That doesn't mean don't go — it means go differently.", yellow: "You have enough to test, not enough to fail slowly. Speed and focus matter more than anything.", green: "You have real runway. The question is how to use it." };
+    const labels = { red: '⚠ Tight Runway', yellow: '~ Proceed with Focus', green: '✓ Strong Runway' };
     document.getElementById('runwayMonths').textContent = months;
-    document.getElementById('runwayTier').textContent   = tierLabels[tier];
-    document.getElementById('runwayTier').className = 'runway-tier tier-' + tier;
+    document.getElementById('runwayTier').textContent   = labels[tier];
+    document.getElementById('runwayTier').className = 'runway-tier tier-'+tier;
     document.getElementById('runwayMessage').textContent = msgs[tier];
     document.getElementById('runwayDisplay').classList.add('visible');
-
-    state.savings      = s;
-    state.burn         = b;
-    state.runwayMonths = months;
-    state.runwayTier   = tier;
+    state.savings = s; state.burn = b; state.runwayMonths = months; state.runwayTier = tier;
   }
 
-  /* ── LEAD CAPTURE ─────────────────────────────────────── */
-  async function captureEmail() {
-    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_WEBHOOK_URL') return;
-    try {
-      await fetch(APPS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName:    state.firstName,
-          email:        state.email,
-          motivation:   state.motivation,
-          runwayMonths: state.runwayMonths,
-          runwayTier:   state.runwayTier,
-          timestamp:    new Date().toISOString(),
-          source:       'exit-planner'
-        })
-      });
-    } catch (e) { /* silent */ }
+  /* ── DEEP DIVE ── */
+  let chatHistory = [];
+  let recognition = null;
+  let isRecording = false;
+  let inputMode   = 'voice'; // 'voice' or 'text'
+  let deepDiveComplete = false;
+  let ddSavings = 0, ddBurn = 0;
+
+  function initDeepDive() {
+    document.getElementById('deepDiveWrap').classList.add('visible');
+    if (isSafari || !hasSpeechRecognition) {
+      document.getElementById('safariWarning').style.display = 'block';
+      switchToText();
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const opening = `Hi ${state.firstName}! I'm really glad you're here — this takes a bit of courage, and I want to make sure we use your time well. I'm going to ask you a few questions to understand where you are, and I'll follow the conversation wherever it needs to go.
+
+Let's start with the most important one: **What's pulling you toward this?** Are you running toward something you want to build, running from a job or market that isn't working for you, or honestly a bit of both?`;
+
+    addMessage('assistant', opening);
+    chatHistory.push({ role: 'assistant', content: opening });
   }
 
-  /* ── ANALYSIS ─────────────────────────────────────────── */
-  async function runAnalysis() {
-    if (!validateStep(6)) return;
+  function addMessage(role, text) {
+    const container = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'msg ' + (role === 'user' ? 'user' : '');
+    div.innerHTML = `
+      <div class="msg-avatar">${role === 'user' ? '👤' : '🌙'}</div>
+      <div class="msg-bubble">${text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>')}</div>`;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
 
-    // Hide steps, show loading
-    document.getElementById('step6').classList.remove('visible');
-    document.getElementById('progressWrap').classList.remove('visible');
-    document.getElementById('loadingCard').classList.add('visible');
+  function showTyping() {
+    const container = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'msg';
+    div.id = 'typingIndicator';
+    div.innerHTML = `<div class="msg-avatar">🌙</div><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
 
-    await captureEmail();
+  function removeTyping() {
+    const t = document.getElementById('typingIndicator');
+    if (t) t.remove();
+  }
 
-    const constraintLabels = {
-      remote:         'needs remote-only work',
-      noncompete:     'under a non-compete or NDA',
-      no_calls:       "can't do regular client calls",
-      health_insurance:'needs health insurance from day one',
-      dependents:     'has dependents and can\'t take major income risks',
-      none:           'has full flexibility'
+  function toggleInputMode() {
+    if (inputMode === 'voice') switchToText();
+    else switchToVoice();
+  }
+
+  function switchToText() {
+    inputMode = 'text';
+    document.getElementById('voiceControls').style.display = 'none';
+    document.getElementById('textInputRow').style.display  = 'flex';
+    document.getElementById('inputToggle').querySelector('button').textContent = 'Switch to voice instead';
+  }
+
+  function switchToVoice() {
+    if (!hasSpeechRecognition || isSafari) return;
+    inputMode = 'voice';
+    document.getElementById('voiceControls').style.display = 'flex';
+    document.getElementById('textInputRow').style.display  = 'none';
+    document.getElementById('inputToggle').querySelector('button').textContent = 'Switch to typing instead';
+  }
+
+  function sendText() {
+    const ta  = document.getElementById('textInput');
+    const txt = ta.value.trim();
+    if (!txt) return;
+    ta.value = '';
+    processUserInput(txt);
+  }
+
+  /* ── SPEECH RECOGNITION ── */
+  function startRecording(e) {
+    if (e) e.preventDefault();
+    if (isRecording || deepDiveComplete) return;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+
+    recognition = new SpeechRecognition();
+    recognition.continuous    = true;
+    recognition.interimResults = true;
+    recognition.lang           = 'en-US';
+
+    recognition.onresult = (event) => {
+      let interim = '';
+      let final   = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) final   += event.results[i][0].transcript;
+        else                          interim += event.results[i][0].transcript;
+      }
+      document.getElementById('transcriptPreview').textContent = final || interim;
     };
-    const constraintText = state.constraints.length
-      ? state.constraints.map(c => constraintLabels[c] || c).join(', ')
-      : 'no specific constraints mentioned';
 
-    const motivationMap = {
-      toward: 'running toward something — real pull to build',
-      from:   'running from something — job or market is broken',
-      both:   'both running toward and away from current situation',
-      unsure: 'not yet sure of direction'
+    recognition.start();
+    isRecording = true;
+    document.getElementById('pttBtn').classList.add('recording');
+    document.getElementById('pttLabel').textContent = 'Listening... release to send';
+    document.getElementById('pttLabel').classList.add('recording');
+    document.getElementById('transcriptPreview').textContent = '';
+  }
+
+  function stopRecording(e) {
+    if (e) e.preventDefault();
+    if (!isRecording || !recognition) return;
+
+    recognition.onend = () => {
+      const txt = document.getElementById('transcriptPreview').textContent.trim();
+      document.getElementById('transcriptPreview').textContent = '';
+      document.getElementById('pttBtn').classList.remove('recording');
+      document.getElementById('pttLabel').textContent = 'Hold to speak';
+      document.getElementById('pttLabel').classList.remove('recording');
+      if (txt) processUserInput(txt);
     };
-    const validationMap = {
-      yes_paid:     'has already received payment or firm commitment',
-      yes_interest: 'has tested and received strong interest but no money yet',
-      no_idea:      'has an idea but has not tested it',
-      no_idea_yet:  'does not yet have a specific idea'
-    };
 
-    const prompt = `You are a business advisor helping someone evaluate whether to leave their job and start a business. 
+    recognition.stop();
+    isRecording = false;
+  }
 
-User profile:
-- Name: ${state.firstName}
-- Motivation: ${motivationMap[state.motivation] || state.motivation}
-- Skills (what people have paid them to do): ${state.skills}
-- Market validation status: ${validationMap[state.validation] || state.validation}
-- Validation detail: ${state.validationDetail || 'none provided'}
-- Constraints: ${constraintText}
-- Additional constraints: ${state.constraintOther || 'none'}
-- Savings available: $${state.savings.toLocaleString()}
-- Monthly burn: $${state.burn.toLocaleString()}
-- Runway: ${state.runwayMonths} months (${state.runwayTier} tier: red=0-8mo, yellow=9-15mo, green=16+mo)
+  /* ── CONVERSATION ENGINE ── */
+  async function processUserInput(userText) {
+    if (deepDiveComplete) return;
 
-Return ONLY valid JSON (no markdown, no backticks, no explanation) with exactly this structure:
+    addMessage('user', userText);
+    chatHistory.push({ role: 'user', content: userText });
+
+    document.getElementById('pttBtn') && (document.getElementById('pttBtn').disabled = true);
+    document.getElementById('sendBtn') && (document.getElementById('sendBtn').disabled = true);
+
+    showTyping();
+
+    const systemPrompt = `You are a warm, encouraging business advisor conducting a conversational interview to assess whether someone is ready to leave their job and start a business. You work for Moonshot Consulting, run by David Oliver.
+
+Your job:
+1. Ask probing follow-up questions based on what they say — don't just move to the next topic mechanically
+2. Be warm and human — acknowledge emotions, validate what they share, but stay focused on getting real information
+3. Gather: motivation (running toward/from/both), specific skills they've been paid for, market validation status, real constraints (remote only, non-compete, health insurance, dependents), financial runway (savings and monthly burn)
+4. When you have enough information across all these areas (minimum 4-5 exchanges), say EXACTLY: "I think I have what I need — let me build your plan." and then output a JSON block.
+
+The JSON must be wrapped in <PLAN> tags and contain:
 {
-  "readiness_score": <integer 0-100>,
-  "readiness_label": <string, e.g. "Ready to Launch" / "Almost Ready" / "Build Your Base" / "Not Yet">,
-  "narrative": <2-3 sentence honest assessment of their overall readiness>,
-  "business_concept": <a specific, named business concept tailored to their exact skills, constraints, and validation status — not generic>,
-  "business_concept_rationale": <2-3 sentences explaining exactly why this concept fits them>,
-  "next_steps": [
-    { "title": <string>, "description": <1-2 sentence specific action> },
-    { "title": <string>, "description": <1-2 sentence specific action> },
-    { "title": <string>, "description": <1-2 sentence specific action> }
-  ],
-  "resources": [
-    { "title": <string>, "url": <real, working URL>, "description": <one sentence> },
-    { "title": <string>, "url": <real, working URL>, "description": <one sentence> },
-    { "title": <string>, "url": <real, working URL>, "description": <one sentence> }
-  ],
-  "runway_insight": <2-3 sentences of honest, specific advice about their runway situation — use the red/yellow/green framing but make it personal to their numbers and situation>
+  "readiness_score": integer 0-100,
+  "readiness_label": string,
+  "narrative": string (3-4 paragraphs, richer and more personal than a wizard result),
+  "business_concept": string,
+  "business_concept_rationale": string,
+  "savings": number (extract from conversation, 0 if not mentioned),
+  "burn": number (monthly expenses, 0 if not mentioned),
+  "next_steps": [{"title": string, "description": string}, x3],
+  "resources": [{"title": string, "url": string, "description": string}, x3],
+  "runway_insight": string
 }
 
-Scoring guidance:
-- Market validation (yes_paid = +30, yes_interest = +15, no_idea = +5, no_idea_yet = 0)
-- Motivation (toward = +15, both = +10, from = +5, unsure = 0)
-- Runway (green = +20, yellow = +10, red = 0)
-- Skills specificity (very specific and marketable = +20, vague = +5)
-- Constraints (none = +5, many severe = -10)
-- Base: 10
+Scoring: validation(yes_paid=+30, yes_interest=+15, no_idea=+5, none=0) + motivation(toward=+15, both=+10, from=+5, unsure=0) + runway(green=+20, yellow=+10, red=0) + skills specificity(high=+20, low=+5) + constraints(none=+5, many=-10) + base 10.
 
-Be honest. Don't inflate scores. If runway is red and motivation is unclear, say so directly but constructively.
-For resources, use real URLs that actually exist — prefer wellknown books (amazon), communities (reddit, etc.), or tools relevant to their specific business concept.`;
+User's name: ${state.firstName}
+
+Do NOT output the JSON until you explicitly say "I think I have what I need — let me build your plan." Keep responses conversational, 2-4 sentences max unless asked for more. Ask one follow-up question at a time.`;
 
     try {
       const response = await fetch(PROXY_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model:      'claude-sonnet-4-20250514',
-          max_tokens: 1500,
-          messages:   [{ role: 'user', content: prompt }]
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1200,
+          system: systemPrompt,
+          messages: chatHistory
         })
       });
 
-      if (!response.ok) throw new Error('API error ' + response.status);
-
       const data = await response.json();
-      const raw  = data.content?.[0]?.text || '';
-      const clean= raw.replace(/```json|```/g, '').trim();
-      const result = JSON.parse(clean);
+      const reply = data.content?.[0]?.text || '';
+      removeTyping();
 
+      if (reply.includes('<PLAN>')) {
+        deepDiveComplete = true;
+        const closingText = reply.split('<PLAN>')[0].trim();
+        if (closingText) addMessage('assistant', closingText);
+        chatHistory.push({ role: 'assistant', content: closingText || "I think I have what I need — let me build your plan." });
+
+        const jsonStr = reply.split('<PLAN>')[1].split('</PLAN>')[0].trim();
+        const result  = JSON.parse(jsonStr.replace(/```json|```/g,'').trim());
+
+        // Extract runway from conversation
+        if (result.savings) { state.savings = result.savings; state.burn = result.burn || 0; state.runwayMonths = result.burn > 0 ? Math.floor(result.savings/result.burn) : 0; state.runwayTier = getTier(state.runwayMonths); }
+
+        document.getElementById('deepDiveWrap').classList.remove('visible');
+        document.getElementById('loadingCard').classList.add('visible');
+        setTimeout(() => {
+          document.getElementById('loadingCard').classList.remove('visible');
+          document.getElementById('resultsModeTag').textContent = 'Deep Dive';
+          document.getElementById('narrativeCard').classList.add('visible');
+          document.getElementById('narrativeBody').innerHTML = result.narrative.replace(/\n/g, '<br><br>');
+          renderResults(result);
+        }, 1500);
+
+      } else {
+        addMessage('assistant', reply);
+        chatHistory.push({ role: 'assistant', content: reply });
+        document.getElementById('pttBtn') && (document.getElementById('pttBtn').disabled = false);
+        document.getElementById('sendBtn') && (document.getElementById('sendBtn').disabled = false);
+      }
+
+    } catch(err) {
+      removeTyping();
+      addMessage('assistant', "Something went wrong on my end. Please try again.");
+      document.getElementById('pttBtn') && (document.getElementById('pttBtn').disabled = false);
+      document.getElementById('sendBtn') && (document.getElementById('sendBtn').disabled = false);
+    }
+  }
+
+  /* ── WIZARD ANALYSIS ── */
+  async function runWizardAnalysis() {
+    if (!validateWizardStep(6)) return;
+    [2,3,4,5,6].forEach(i => document.getElementById('step'+i).classList.remove('visible'));
+    document.getElementById('progressWrap').classList.remove('visible');
+    document.getElementById('loadingCard').classList.add('visible');
+
+    const constraintLabels = { remote: 'needs remote-only work', noncompete: 'under a non-compete or NDA', no_calls: "can't do regular client calls", health_insurance: 'needs health insurance from day one', dependents: "has dependents and can't take major income risks", none: 'has full flexibility' };
+    const constraintText = state.constraints.length ? state.constraints.map(c => constraintLabels[c]||c).join(', ') : 'no specific constraints mentioned';
+    const motivationMap  = { toward: 'running toward something', from: 'running from something', both: 'both running toward and away', unsure: 'not yet sure of direction' };
+    const validationMap  = { yes_paid: 'has already received payment', yes_interest: 'has strong interest but no money yet', no_idea: 'has an idea but not tested', no_idea_yet: 'does not have a specific idea' };
+
+    const prompt = `You are a business advisor. User profile:
+Name: ${state.firstName}, Motivation: ${motivationMap[state.motivation]||state.motivation}, Skills: ${state.skills}, Validation: ${validationMap[state.validation]||state.validation}, Validation detail: ${state.validationDetail||'none'}, Constraints: ${constraintText}, Additional: ${state.constraintOther||'none'}, Savings: $${state.savings.toLocaleString()}, Monthly burn: $${state.burn.toLocaleString()}, Runway: ${state.runwayMonths} months (${state.runwayTier}).
+
+Return ONLY valid JSON:
+{"readiness_score":integer,"readiness_label":string,"narrative":string,"business_concept":string,"business_concept_rationale":string,"next_steps":[{"title":string,"description":string},{"title":string,"description":string},{"title":string,"description":string}],"resources":[{"title":string,"url":string,"description":string},{"title":string,"url":string,"description":string},{"title":string,"url":string,"description":string}],"runway_insight":string}
+
+Scoring: validation(yes_paid=+30,yes_interest=+15,no_idea=+5,none=0)+motivation(toward=+15,both=+10,from=+5,unsure=0)+runway(green=+20,yellow=+10,red=0)+skills(specific=+20,vague=+5)+constraints(none=+5,many=-10)+base 10. Be honest.`;
+
+    try {
+      const response = await fetch(PROXY_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1500, messages: [{ role: 'user', content: prompt }] })
+      });
+      const data   = await response.json();
+      const raw    = data.content?.[0]?.text || '';
+      const result = JSON.parse(raw.replace(/```json|```/g,'').trim());
+      document.getElementById('loadingCard').classList.remove('visible');
+      document.getElementById('resultsModeTag').textContent = 'Quick Plan';
       renderResults(result);
-
-    } catch (err) {
-      console.error(err);
+    } catch(err) {
       document.getElementById('loadingCard').classList.remove('visible');
       document.getElementById('step6').classList.add('visible');
       document.getElementById('progressWrap').classList.add('visible');
-      showError('step6Error');
+      document.getElementById('step6Error').classList.add('visible');
       document.getElementById('step6Error').textContent = 'Something went wrong. Please try again.';
     }
   }
 
-  /* ── RENDER RESULTS ───────────────────────────────────── */
+  /* ── RENDER RESULTS ── */
   function renderResults(r) {
-    document.getElementById('loadingCard').classList.remove('visible');
-
-    // Score ring
     const score = Math.min(100, Math.max(0, r.readiness_score));
-    const circumference = 2 * Math.PI * 56; // 351.86
-    const offset = circumference - (score / 100) * circumference;
-
+    const circumference = 2 * Math.PI * 56;
+    const offset = circumference - (score/100)*circumference;
     document.getElementById('scoreVal').textContent       = score;
     document.getElementById('scoreLabel').textContent     = r.readiness_label || '';
-    document.getElementById('scoreNarrative').textContent = r.narrative || '';
-
-    // Animate ring
-    setTimeout(() => {
-      document.getElementById('scoreRingFill').style.strokeDashoffset = offset;
-    }, 200);
-
-    // Color ring by score
+    document.getElementById('scoreNarrative').textContent = r.narrative?.split('\n')[0] || r.narrative || '';
+    setTimeout(() => { document.getElementById('scoreRingFill').style.strokeDashoffset = offset; }, 200);
     const ringEl = document.getElementById('scoreRingFill');
-    if      (score >= 70) ringEl.style.stroke = 'var(--green)';
+    if (score >= 70) ringEl.style.stroke = 'var(--green)';
     else if (score >= 45) ringEl.style.stroke = 'var(--amber)';
-    else                  ringEl.style.stroke = 'var(--red)';
+    else ringEl.style.stroke = 'var(--red)';
 
-    // Survival math
     const tierLabels = { red: '⚠ Tight Runway', yellow: '~ Proceed with Focus', green: '✓ Strong Runway' };
-    document.getElementById('resultRunwayMonths').textContent  = state.runwayMonths;
+    document.getElementById('resultRunwayMonths').textContent = state.runwayMonths || '—';
     const tierBadge = document.getElementById('resultRunwayTier');
-    tierBadge.textContent = tierLabels[state.runwayTier] || '';
-    tierBadge.className   = 'survival-tier-badge tier-' + state.runwayTier;
+    tierBadge.textContent = tierLabels[state.runwayTier] || (state.runwayMonths ? tierLabels[getTier(state.runwayMonths)] : '—');
+    tierBadge.className   = 'survival-tier-badge tier-'+(state.runwayTier||'yellow');
     document.getElementById('runwayInsight').textContent = r.runway_insight || '';
 
-    // Business concept
     document.getElementById('conceptName').textContent      = r.business_concept || '';
     document.getElementById('conceptRationale').textContent = r.business_concept_rationale || '';
 
-    // Next steps
     const stepsList = document.getElementById('stepsList');
     stepsList.innerHTML = '';
-    (r.next_steps || []).forEach((s, i) => {
+    (r.next_steps||[]).forEach((s,i) => {
       const li = document.createElement('li');
       li.className = 'step-item';
-      li.innerHTML = `
-        <div class="step-num">${i + 1}</div>
-        <div class="step-body">
-          <div class="step-title">${s.title}</div>
-          <div class="step-desc">${s.description}</div>
-        </div>`;
+      li.innerHTML = `<div class="step-num">${i+1}</div><div class="step-body"><div class="step-title">${s.title}</div><div class="step-desc">${s.description}</div></div>`;
       stepsList.appendChild(li);
     });
 
-    // Resources
     const resList = document.getElementById('resourceList');
     resList.innerHTML = '';
-    (r.resources || []).forEach(res => {
+    (r.resources||[]).forEach(res => {
       const li = document.createElement('li');
-      li.innerHTML = `
-        <a href="${res.url}" target="_blank" class="resource-item">
-          <span>
-            <strong>${res.title}</strong><br>
-            <span style="color:var(--muted);font-size:13px">${res.description}</span>
-          </span>
-          <span class="resource-arrow">↗</span>
-        </a>`;
+      li.innerHTML = `<a href="${res.url}" target="_blank" class="resource-item"><span><strong>${res.title}</strong><br><span style="color:var(--muted);font-size:13px">${res.description}</span></span><span class="resource-arrow">↗</span></a>`;
       resList.appendChild(li);
     });
 
@@ -1441,7 +1343,19 @@ For resources, use real URLs that actually exist — prefer wellknown books (ama
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  /* ── SHARE ────────────────────────────────────────────── */
+  /* ── LEAD CAPTURE ── */
+  async function captureEmail() {
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_WEBHOOK_URL') return;
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName: state.firstName, email: state.email, mode: state.mode, timestamp: new Date().toISOString(), source: 'exit-planner' })
+      });
+    } catch(e) {}
+  }
+
+  /* ── SHARE ── */
   function shareResults() {
     const url = window.location.href.split('?')[0];
     navigator.clipboard.writeText(url).then(() => {
