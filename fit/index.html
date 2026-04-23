@@ -1,13 +1,739 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="refresh" content="0; url=https://www.moonshotfitanalyzer.com/">
-      <link rel="canonical" href="https://www.moonshotfitanalyzer.com/">
-      <script>window.location.replace("https://www.moonshotfitanalyzer.com/");</script>
-    <title>Redirecting to Moonshot Job Fit Analyzer...</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moonshot Job Fit Analyzer | Candidate Fit Scoring Tool</title>
+  <meta name="description" content="Quickly score candidate fit across 6 key dimensions. Built by Moonshot Consulting DC for early-stage startup hiring teams.">
+  <meta name="keywords" content="candidate fit, job fit analyzer, recruiting tool, startup hiring, talent acquisition">
+  <meta name="author" content="David Oliver, Moonshot Consulting">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://moonshotfitanalyzer.com">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://moonshotfitanalyzer.com">
+  <meta property="og:title" content="Moonshot Job Fit Analyzer">
+  <meta property="og:description" content="Score candidate fit across 6 dimensions in under 2 minutes. Built for startup hiring teams.">
+  <meta property="og:site_name" content="Moonshot Consulting">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #1a1f2e;
+      --bg2:       #222736;
+      --bg3:       #2a3045;
+      --amber:     #667eea;
+      --amber-dim: #4f63c8;
+      --amber-glow: rgba(102,126,234,0.15);
+      --text:      #f0f2f8;
+      --muted:     #8b9ab8;
+      --border:    rgba(102,126,234,0.2);
+      --red:       #e05252;
+      --yellow:    #e8a020;
+      --green:     #4caf82;
+      --radius:    12px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,126,234,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 100%, rgba(78,99,200,0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-wrap img { height: 36px; }
+    .header-text h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .header-text p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+    .section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+      font-weight: 500;
+    }
+    input[type="text"], textarea, select {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      padding: 0.65rem 0.85rem;
+      transition: border-color var(--transition);
+      outline: none;
+      resize: vertical;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px var(--amber-glow);
+    }
+    select option { background: var(--bg3); }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+    .form-field { margin-bottom: 1rem; }
+    .form-field:last-child { margin-bottom: 0; }
+    .dimension-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .dimension-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .dimension-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .dimension-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--bg);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--amber);
+      cursor: pointer;
+      box-shadow: 0 0 6px var(--amber-glow);
+    }
+    .score-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--amber);
+      min-width: 2ch;
+      text-align: right;
+    }
+    .notes-area { margin-top: 0.75rem; }
+    .cta-wrap {
+      text-align: center;
+      margin: 2rem 0 1.5rem;
+    }
+    .btn-analyze {
+      background: linear-gradient(135deg, var(--amber), var(--amber-dim));
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.85rem 2.5rem;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: all var(--transition);
+      box-shadow: 0 4px 20px rgba(102,126,234,0.3);
+    }
+    .btn-analyze:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(102,126,234,0.45);
+    }
+    #results { display: none; }
+    #results.visible { display: block; }
+    .results-header {
+      background: linear-gradient(135deg, rgba(102,126,234,0.12), rgba(78,99,200,0.06));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+      text-align: center;
+    }
+    .fit-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+    }
+    .fit-badge.strong { background: rgba(76,175,130,0.15); color: var(--green); border: 1px solid rgba(76,175,130,0.3); }
+    .fit-badge.good   { background: rgba(102,126,234,0.15); color: var(--amber); border: 1px solid rgba(102,126,234,0.3); }
+    .fit-badge.fair   { background: rgba(232,160,32,0.15);  color: var(--yellow); border: 1px solid rgba(232,160,32,0.3); }
+    .fit-badge.weak   { background: rgba(224,82,82,0.15);   color: var(--red);    border: 1px solid rgba(224,82,82,0.3); }
+    .overall-score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .overall-score span { font-size: 1.4rem; color: var(--muted); }
+    .candidate-title { font-size: 0.85rem; color: var(--muted); }
+    .dim-results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+    .dim-result {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+    }
+    .dim-result-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .dim-result-name { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+    .dim-result-score { font-size: 0.85rem; font-weight: 700; }
+    .dim-bar-bg {
+      height: 5px;
+      border-radius: 3px;
+      background: var(--bg);
+      overflow: hidden;
+    }
+    .dim-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .dim-weight { font-size: 0.65rem; color: var(--muted); margin-top: 0.3rem; }
+    .signals-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .signal-card {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+    }
+    .signal-card.green { border: 1px solid rgba(76,175,130,0.25); }
+    .signal-card.red   { border: 1px solid rgba(224,82,82,0.25); }
+    .signal-card h4 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .signal-card.green h4 { color: var(--green); }
+    .signal-card.red   h4 { color: var(--red); }
+    .signal-card ul { list-style: none; padding: 0; }
+    .signal-card li {
+      font-size: 0.82rem;
+      color: var(--muted);
+      padding: 0.3rem 0 0.3rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      position: relative;
+    }
+    .signal-card li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .signal-card.green li::before { background: var(--green); }
+    .signal-card.red   li::before { background: var(--red); }
+    .rec-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .rec-card h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.75rem;
+    }
+    .rec-text { font-size: 0.9rem; color: var(--text); line-height: 1.7; }
+    .action-row {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    .btn-secondary {
+      background: var(--bg3);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.6rem 1.4rem;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-secondary:hover { background: var(--bg2); border-color: var(--amber); color: var(--amber); }
+    footer {
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--amber); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media print {
+      body::before { display: none; }
+      .btn-analyze, .action-row, .cta-wrap { display: none; }
+      #inputForm { display: none !important; }
+      #results { display: block !important; }
+      body { background: #fff; color: #111; }
+      .results-header, .dim-result, .signal-card, .rec-card { border: 1px solid #ccc; }
+    }
+    @media (max-width: 640px) {
+      .form-row, .form-row.three, .dimension-grid, .dim-results-grid, .signals-grid { grid-template-columns: 1fr; }
+      .action-row { flex-direction: column; }
+    }
+  </style>
+</head>
 <body>
-    <p>Redirecting... <a href="https://www.moonshotfitanalyzer.com/">Click here if not redirected.</a></p>
+<div class="container">
+
+  <header>
+    <div class="logo-wrap">
+      <img src="https://moonshotexitplanner.com/assets/MoonshotLogo.webp" alt="Moonshot Consulting" onerror="this.style.display='none'">
+    </div>
+    <div class="header-text">
+      <h1>Moonshot Job Fit Analyzer</h1>
+      <p>Score candidate fit across 6 dimensions &mdash; built for startup hiring teams</p>
+    </div>
+  </header>
+
+  <div id="inputForm">
+
+    <div class="section">
+      <div class="section-title">Role Information</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="roleTitle">Job Title</label>
+          <input type="text" id="roleTitle" placeholder="e.g. VP of Sales, Head of Engineering">
+        </div>
+        <div class="form-field">
+          <label for="company">Company</label>
+          <input type="text" id="company" placeholder="e.g. Acme AI (Series B)">
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="form-field">
+          <label for="stage">Company Stage</label>
+          <select id="stage">
+            <option value="">Select stage</option>
+            <option>Pre-seed</option>
+            <option>Seed</option>
+            <option>Series A</option>
+            <option>Series B</option>
+            <option>Series C+</option>
+            <option>Growth / Pre-IPO</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="compBase">Base Comp Range</label>
+          <input type="text" id="compBase" placeholder="e.g. $180-220K">
+        </div>
+        <div class="form-field">
+          <label for="compEquity">Equity Range</label>
+          <input type="text" id="compEquity" placeholder="e.g. 0.25-0.5%">
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="roleContext">Role Context &amp; Key Requirements</label>
+        <textarea id="roleContext" rows="4" placeholder="Paste job description highlights, must-haves, key deliverables in the first 90 days, reporting structure, etc."></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Candidate Profile</div>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="candidateName">Candidate Name</label>
+          <input type="text" id="candidateName" placeholder="First Last">
+        </div>
+        <div class="form-field">
+          <label for="currentTitle">Current / Most Recent Title</label>
+          <input type="text" id="currentTitle" placeholder="e.g. Director of Sales at TechCorp">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="candComp">Candidate Comp Expectation</label>
+          <input type="text" id="candComp" placeholder="e.g. $200K base + equity">
+        </div>
+        <div class="form-field">
+          <label for="candTimeline">Availability / Timeline</label>
+          <input type="text" id="candTimeline" placeholder="e.g. 2 weeks, immediately, 60 days">
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="candBackground">Candidate Background Summary</label>
+        <textarea id="candBackground" rows="4" placeholder="Summarize relevant experience, notable achievements, company types, stage experience, key skills, any concerns from resume or screen..."></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Fit Scoring &mdash; Rate Each Dimension (1-10)</div>
+      <div class="dimension-grid">
+
+        <div class="dimension-card">
+          <div class="dimension-label">Experience Match</div>
+          <div class="dimension-sub">Relevant role experience &amp; scope (weight: 25%)</div>
+          <div class="score-row">
+            <input type="range" id="s1" min="1" max="10" value="5" oninput="updateScore('v1',this.value)">
+            <div class="score-val" id="v1">5</div>
+          </div>
+          <div class="notes-area">
+            <textarea id="n1" rows="2" placeholder="Notes on experience fit..."></textarea>
+          </div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-label">Skills &amp; Technical Fit</div>
+          <div class="dimension-sub">Hard skills, tools, domain expertise (weight: 20%)</div>
+          <div class="score-row">
+            <input type="range" id="s2" min="1" max="10" value="5" oninput="updateScore('v2',this.value)">
+            <div class="score-val" id="v2">5</div>
+          </div>
+          <div class="notes-area">
+            <textarea id="n2" rows="2" placeholder="Notes on skills fit..."></textarea>
+          </div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-label">Stage &amp; Culture Fit</div>
+          <div class="dimension-sub">Startup stage comfort, pace, mindset (weight: 18%)</div>
+          <div class="score-row">
+            <input type="range" id="s3" min="1" max="10" value="5" oninput="updateScore('v3',this.value)">
+            <div class="score-val" id="v3">5</div>
+          </div>
+          <div class="notes-area">
+            <textarea id="n3" rows="2" placeholder="Notes on stage/culture fit..."></textarea>
+          </div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-label">Compensation Alignment</div>
+          <div class="dimension-sub">Base, equity, total comp match (weight: 12%)</div>
+          <div class="score-row">
+            <input type="range" id="s4" min="1" max="10" value="5" oninput="updateScore('v4',this.value)">
+            <div class="score-val" id="v4">5</div>
+          </div>
+          <div class="notes-area">
+            <textarea id="n4" rows="2" placeholder="Notes on comp alignment..."></textarea>
+          </div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-label">Leadership &amp; Soft Skills</div>
+          <div class="dimension-sub">Communication, influence, coachability (weight: 15%)</div>
+          <div class="score-row">
+            <input type="range" id="s5" min="1" max="10" value="5" oninput="updateScore('v5',this.value)">
+            <div class="score-val" id="v5">5</div>
+          </div>
+          <div class="notes-area">
+            <textarea id="n5" rows="2" placeholder="Notes on leadership/soft skills..."></textarea>
+          </div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-label">Motivation &amp; Urgency</div>
+          <div class="dimension-sub">Drive, reasons for looking, interest level (weight: 10%)</div>
+          <div class="score-row">
+            <input type="range" id="s6" min="1" max="10" value="5" oninput="updateScore('v6',this.value)">
+            <div class="score-val" id="v6">5</div>
+          </div>
+          <div class="notes-area">
+            <textarea id="n6" rows="2" placeholder="Notes on motivation/urgency..."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Overall Assessment</div>
+      <div class="form-field">
+        <label for="greenFlags">Green Flags (one per line)</label>
+        <textarea id="greenFlags" rows="3" placeholder="e.g. Built and scaled SDR team 0 to 12 at Series A&#10;Strong network in target ICP&#10;Available in 2 weeks"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="redFlags">Red Flags / Concerns (one per line)</label>
+        <textarea id="redFlags" rows="3" placeholder="e.g. Never worked at sub-50 person company&#10;Comp ask is at top of range&#10;Short tenure at last two roles"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="recommendation">Recruiter Recommendation</label>
+        <select id="recommendation">
+          <option value="">Select recommendation</option>
+          <option value="strong_yes">Strong Yes - Move to next round immediately</option>
+          <option value="yes">Yes - Worth advancing, minor concerns only</option>
+          <option value="maybe">Maybe - Advance with caveats, needs more diligence</option>
+          <option value="no">No - Not the right fit at this time</option>
+          <option value="strong_no">Strong No - Significant misalignment</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="btn-analyze" onclick="generateReport()">Generate Fit Report</button>
+    </div>
+
+  </div>
+
+  <div id="results">
+
+    <div class="results-header">
+      <div class="fit-badge" id="fitBadge">Strong Fit</div>
+      <div class="overall-score" id="overallScore">8.2<span>/10</span></div>
+      <div class="candidate-title" id="candidateTitle"></div>
+    </div>
+
+    <div class="dim-results-grid" id="dimResultsGrid"></div>
+
+    <div class="signals-grid">
+      <div class="signal-card green">
+        <h4>Green Flags</h4>
+        <ul id="greenList"></ul>
+      </div>
+      <div class="signal-card red">
+        <h4>Concerns</h4>
+        <ul id="redList"></ul>
+      </div>
+    </div>
+
+    <div class="rec-card">
+      <h3>Recruiter Recommendation</h3>
+      <div class="rec-text" id="recText"></div>
+    </div>
+
+    <div class="rec-card">
+      <h3>Role and Candidate Context</h3>
+      <div class="rec-text" id="roleContextDisplay"></div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-secondary" onclick="printReport()">Print / Save PDF</button>
+      <button class="btn-secondary" onclick="resetForm()">New Analysis</button>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Built by <a href="https://moonshotconsultingdc.com" target="_blank">Moonshot Consulting DC</a> &mdash; Fractional talent acquisition for early-stage startups &mdash; <a href="https://calendly.com/moonshotconsultingdc-moonshot-introduction" target="_blank">Book an intro call</a></p>
+  </footer>
+
+</div>
+
+<script>
+  const WEIGHTS = [0.25, 0.20, 0.18, 0.12, 0.15, 0.10];
+  const DIM_NAMES = ['Experience Match','Skills & Technical Fit','Stage & Culture Fit','Compensation Alignment','Leadership & Soft Skills','Motivation & Urgency'];
+  const REC_LABELS = {
+    strong_yes: 'Strong Yes — Move to next round immediately.',
+    yes: 'Yes — Worth advancing, minor concerns only.',
+    maybe: 'Maybe — Advance with caveats; additional diligence recommended.',
+    no: 'No — Not the right fit at this time.',
+    strong_no: 'Strong No — Significant misalignment across multiple dimensions.',
+    '': 'No recommendation recorded.'
+  };
+
+  function updateScore(valId, val) {
+    document.getElementById(valId).textContent = val;
+  }
+
+  function getScores() {
+    return [1,2,3,4,5,6].map(function(i){ return parseInt(document.getElementById('s'+i).value); });
+  }
+
+  function weightedAvg(scores) {
+    return scores.reduce(function(sum, s, i){ return sum + s * WEIGHTS[i]; }, 0);
+  }
+
+  function getFitLevel(score) {
+    if (score >= 8.0) return { label: 'Strong Fit', cls: 'strong', color: '#4caf82' };
+    if (score >= 6.5) return { label: 'Good Fit',   cls: 'good',   color: '#667eea' };
+    if (score >= 5.0) return { label: 'Fair Fit',   cls: 'fair',   color: '#e8a020' };
+    return              { label: 'Weak Fit',   cls: 'weak',   color: '#e05252' };
+  }
+
+  function getBarColor(score) {
+    if (score >= 8) return '#4caf82';
+    if (score >= 6) return '#667eea';
+    if (score >= 4) return '#e8a020';
+    return '#e05252';
+  }
+
+  function generateReport() {
+    var scores = getScores();
+    var overall = weightedAvg(scores);
+    var fit = getFitLevel(overall);
+
+    var name = (document.getElementById('candidateName').value || '').trim() || 'Candidate';
+    var role = (document.getElementById('roleTitle').value || '').trim();
+    var company = (document.getElementById('company').value || '').trim();
+    var sub = role && company ? role + ' at ' + company : (role || company);
+    var titleLine = sub ? name + ' — ' + sub : name;
+
+    document.getElementById('fitBadge').textContent = fit.label;
+    document.getElementById('fitBadge').className = 'fit-badge ' + fit.cls;
+    document.getElementById('overallScore').innerHTML = overall.toFixed(1) + '<span>/10</span>';
+    document.getElementById('candidateTitle').textContent = titleLine;
+
+    var grid = document.getElementById('dimResultsGrid');
+    grid.innerHTML = '';
+    scores.forEach(function(s, i) {
+      var pct = (s / 10) * 100;
+      var color = getBarColor(s);
+      var card = document.createElement('div');
+      card.className = 'dim-result';
+      card.innerHTML =
+        '<div class="dim-result-top">' +
+          '<span class="dim-result-name">' + DIM_NAMES[i] + '</span>' +
+          '<span class="dim-result-score" style="color:' + color + '">' + s + '/10</span>' +
+        '</div>' +
+        '<div class="dim-bar-bg"><div class="dim-bar-fill" style="width:0%;background:' + color + '"></div></div>' +
+        '<div class="dim-weight">Weight: ' + Math.round(WEIGHTS[i]*100) + '%</div>';
+      grid.appendChild(card);
+    });
+
+    var gfRaw = (document.getElementById('greenFlags').value || '').trim().split('
+').filter(function(l){ return l.trim(); });
+    var gl = document.getElementById('greenList');
+    gl.innerHTML = gfRaw.length ? gfRaw.map(function(f){ return '<li>' + f.trim() + '</li>'; }).join('') : '<li>No green flags noted</li>';
+
+    var rfRaw = (document.getElementById('redFlags').value || '').trim().split('
+').filter(function(l){ return l.trim(); });
+    var rl = document.getElementById('redList');
+    rl.innerHTML = rfRaw.length ? rfRaw.map(function(f){ return '<li>' + f.trim() + '</li>'; }).join('') : '<li>No concerns noted</li>';
+
+    var rec = document.getElementById('recommendation').value;
+    document.getElementById('recText').innerHTML = REC_LABELS[rec] || REC_LABELS[''];
+
+    var ctxParts = [];
+    var rc = (document.getElementById('roleContext').value || '').trim();
+    var cb = (document.getElementById('candBackground').value || '').trim();
+    var stage = document.getElementById('stage').value;
+    var base = (document.getElementById('compBase').value || '').trim();
+    var equity = (document.getElementById('compEquity').value || '').trim();
+    var candComp = (document.getElementById('candComp').value || '').trim();
+    var timeline = (document.getElementById('candTimeline').value || '').trim();
+
+    if (stage || base || equity) {
+      ctxParts.push('<strong>Role:</strong> ' + [stage, base && ('Base: ' + base), equity && ('Equity: ' + equity)].filter(Boolean).join(' | '));
+    }
+    if (rc) ctxParts.push('<strong>Role Context:</strong> ' + rc);
+    if (candComp || timeline) {
+      ctxParts.push('<strong>Candidate:</strong> ' + [candComp && ('Comp ask: ' + candComp), timeline && ('Timeline: ' + timeline)].filter(Boolean).join(' | '));
+    }
+    if (cb) ctxParts.push('<strong>Background:</strong> ' + cb);
+    document.getElementById('roleContextDisplay').innerHTML = ctxParts.length ? ctxParts.join('<br><br>') : 'No context provided.';
+
+    document.getElementById('inputForm').style.display = 'none';
+    var resultsEl = document.getElementById('results');
+    resultsEl.classList.add('visible');
+    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    setTimeout(function() {
+      document.querySelectorAll('.dim-bar-fill').forEach(function(bar) {
+        var targetScore = scores[Array.from(document.querySelectorAll('.dim-bar-fill')).indexOf(bar)];
+        var pct = (targetScore / 10) * 100;
+        bar.style.width = pct + '%';
+      });
+    }, 200);
+  }
+
+  function resetForm() {
+    document.getElementById('results').classList.remove('visible');
+    document.getElementById('inputForm').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function printReport() {
+    window.print();
+  }
+</script>
+
 </body>
 </html>
