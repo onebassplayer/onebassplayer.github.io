@@ -776,11 +776,11 @@
     <p class="card-hint">Your results will be sent here. No spam — just your plan.</p>
     <div class="field">
       <label>First name</label>
-      <input type="text" id="firstName" placeholder="Your first name" />
+      <input type="text" id="firstName" placeholder="Your first name" / oninput="hideError('step1Error')">
     </div>
     <div class="field">
       <label>Email address</label>
-      <input type="email" id="emailInput" placeholder="you@email.com" />
+      <input type="email" id="emailInput" placeholder="you@email.com" / oninput="hideError('step1Error')">
     </div>
     <div class="error-msg" id="step1Error">Please enter your name and a valid email.</div>
     <div class="card-nav">
@@ -825,7 +825,7 @@
     <h2>What have people actually paid you to do?</h2>
     <p class="card-hint">Think about the last 5 years. Not your job title — what specific things did people or companies pay for that you delivered?</p>
     <div class="field">
-      <textarea id="skillsInput" placeholder="e.g. Helped SaaS companies hire their first 10 sales reps. Led product launches. Built and managed remote teams. Closed enterprise deals. Wrote content that drove leads..."></textarea>
+      <textarea id="skillsInput" placeholder="e.g. Helped SaaS companies hire their first 10 sales reps. Led product launches. Built and managed remote teams. Closed enterprise deals. Wrote content that drove leads..." oninput="hideError('step3Error')"></textarea>
     </div>
     <div class="error-msg" id="step3Error">Please describe your skills before continuing.</div>
     <div class="card-nav">
@@ -859,7 +859,7 @@
     </div>
     <div class="field" style="margin-top:16px">
       <label>Tell me more (optional)</label>
-      <textarea id="validationDetail" placeholder="What happened? What did you try? What did people say?" style="min-height:80px"></textarea>
+      <textarea id="validationDetail" placeholder="What happened? What did you try? What did people say?" style="min-height:80px" oninput="hideError('step4Error')"></textarea>
     </div>
     <div class="error-msg" id="step4Error">Please select an option.</div>
     <div class="card-nav">
@@ -901,7 +901,7 @@
     </div>
     <div class="field" style="margin-top:16px">
       <label>Anything else? (optional)</label>
-      <input type="text" id="constraintOther" placeholder="e.g. I need to keep my current job while building..." />
+      <textarea id="constraintOther" rows="3" placeholder="e.g. I need to keep my current job while building, my spouse expects steady income, I have a non-compete, etc."></textarea>
     </div>
     <div class="error-msg" id="step5Error">Please review your selections.</div>
     <div class="card-nav">
@@ -918,13 +918,13 @@
     <div class="field">
       <label>Available savings / funds you'd use to build</label>
       <div class="dollar-wrap">
-        <input type="number" id="savingsInput" placeholder="0" min="0" oninput="calcRunway()" />
+        <input type="number" id="savingsInput" placeholder="0" min="0" step="any" oninput="calcRunway(); hideError('step6Error')" />
       </div>
     </div>
     <div class="field">
       <label>Your monthly personal expenses (everything)</label>
       <div class="dollar-wrap">
-        <input type="number" id="burnInput" placeholder="0" min="0" oninput="calcRunway()" />
+        <input type="number" id="burnInput" placeholder="0" min="0" step="any" oninput="calcRunway(); hideError('step6Error')" />
       </div>
     </div>
 
@@ -1110,13 +1110,19 @@
       state.constraintOther = document.getElementById('constraintOther').value.trim();
     }
     if (n === 6) {
-      const s = parseFloat(document.getElementById('savingsInput').value);
-      const b = parseFloat(document.getElementById('burnInput').value);
-      if (!s || !b || s <= 0 || b <= 0) { showError('step6Error'); return false; }
+      const sRaw = document.getElementById('savingsInput').value;
+      const bRaw = document.getElementById('burnInput').value;
+      const s = parseFloat(sRaw);
+      const b = parseFloat(bRaw);
+      // Bug #7 fix: reject NaN, negatives, and zero burn explicitly
+      if (sRaw === '' || bRaw === '' || isNaN(s) || isNaN(b) || s < 0 || b <= 0) {
+        showError('step6Error');
+        return false;
+      }
       state.savings = s;
-      state.burn    = b;
+      state.burn = b;
       state.runwayMonths = Math.floor(s / b);
-      state.runwayTier   = getTier(state.runwayMonths);
+      state.runwayTier = getTier(state.runwayMonths);
     }
     return true;
   }
@@ -1134,15 +1140,21 @@
 
   const selectedConstraints = new Set();
   function toggleCheck(el, value) {
+    // Bug #3 fix: 'None of these' is mutually exclusive with all other constraints.
     if (value === 'none') {
-      // deselect everything else
       document.querySelectorAll('#constraintGroup .check-opt').forEach(o => o.classList.remove('selected'));
       selectedConstraints.clear();
       el.classList.add('selected');
       selectedConstraints.add('none');
     } else {
-      document.querySelectorAll('#constraintGroup .check-opt[onclick*="none"]').forEach(o => o.classList.remove('selected'));
-      selectedConstraints.delete('none');
+      if (selectedConstraints.has('none')) {
+        selectedConstraints.delete('none');
+        document.querySelectorAll('#constraintGroup .check-opt').forEach(o => {
+          if (o.getAttribute('onclick') && o.getAttribute('onclick').includes("'none'")) {
+            o.classList.remove('selected');
+          }
+        });
+      }
       if (selectedConstraints.has(value)) {
         selectedConstraints.delete(value);
         el.classList.remove('selected');
@@ -1152,6 +1164,7 @@
       }
     }
     state.constraints = [...selectedConstraints];
+    hideError('step5Error');
   }
 
   /* ── SURVIVAL MATH ────────────────────────────────────── */
@@ -1164,7 +1177,7 @@
   function calcRunway() {
     const s = parseFloat(document.getElementById('savingsInput').value);
     const b = parseFloat(document.getElementById('burnInput').value);
-    if (!s || !b || s <= 0 || b <= 0) {
+    if (isNaN(s) || isNaN(b) || s < 0 || b <= 0) {
       document.getElementById('runwayDisplay').classList.remove('visible');
       return;
     }
