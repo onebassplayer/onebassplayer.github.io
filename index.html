@@ -1224,7 +1224,37 @@
   }
 
   /* ── ANALYSIS ─────────────────────────────────────────── */
-  async function runAnalysis() {
+  async   /* ── RESOURCE ALLOWLIST (mirrors prompt library — used to filter LLM output) ─── */
+  window.__RESOURCE_ALLOWLIST = [
+    "https://www.reddit.com/r/consulting/",
+    "https://www.reddit.com/r/Entrepreneur/",
+    "https://www.reddit.com/r/freelance/",
+    "https://www.reddit.com/r/smallbusiness/",
+    "https://www.reddit.com/r/sales/",
+    "https://www.indiehackers.com/",
+    "https://stackingthebricks.com/",
+    "https://stackingthebricks.com/sales-safari-finds-the-right-words/",
+    "https://www.kalzumeus.com/2012/01/23/salary-negotiation/",
+    "https://www.kalzumeus.com/2011/10/28/dont-call-yourself-a-programmer/",
+    "https://www.winwithoutpitching.com/pricing-creativity/",
+    "https://www.winwithoutpitching.com/manifesto/",
+    "https://www.momtestbook.com/",
+    "https://theleanstartup.com/",
+    "https://ofone.co/",
+    "https://www.michaelegerber.com/the-e-myth-revisited",
+    "https://www.acquisition.com/books/100m-offers",
+    "https://www.score.org/",
+    "https://www.sba.gov/business-guide",
+    "https://www.irs.gov/businesses/small-businesses-self-employed",
+    "https://www.legalzoom.com/business/business-formation",
+    "https://stripe.com/atlas/guides",
+    "https://www.freshbooks.com/self-employed",
+    "https://calendly.com/",
+    "https://business.linkedin.com/sales-solutions/sales-navigator",
+    "https://www.hubspot.com/products/crm"
+  ];
+
+  function runAnalysis() {
     if (!validateStep(6)) return;
 
     // Hide steps, show loading
@@ -1302,7 +1332,37 @@ Scoring guidance:
 - Base: 10
 
 Be honest. Don't inflate scores. If runway is red and motivation is unclear, say so directly but constructively.
-For resources, use real URLs that actually exist — prefer wellknown books (amazon), communities (reddit, etc.), or tools relevant to their specific business concept.`;
+For the "resources" array, you MUST select exactly 3 entries from the curated RESOURCE LIBRARY below. Use the title, url, and base description verbatim — you may rewrite the description to be more relevant to the user but the title and url must match exactly. Do NOT invent new URLs under any circumstance. Pick the 3 resources most relevant to the user's specific business_concept and constraints.
+
+RESOURCE LIBRARY (only pick from these):
+[
+  {"title":"r/consulting","url":"https://www.reddit.com/r/consulting/","description":"Active community of independent consultants discussing pricing, contracts, and client acquisition."},
+  {"title":"r/Entrepreneur","url":"https://www.reddit.com/r/Entrepreneur/","description":"Large community for first-time founders, with frequent threads on validation, pricing, and early sales."},
+  {"title":"r/freelance","url":"https://www.reddit.com/r/freelance/","description":"Community focused on freelancing logistics: contracts, taxes, scope, and client management."},
+  {"title":"r/smallbusiness","url":"https://www.reddit.com/r/smallbusiness/","description":"Owner-operator community covering marketing, ops, hiring, and the realities of running a business."},
+  {"title":"r/sales","url":"https://www.reddit.com/r/sales/","description":"Practical sales tactics, cold outreach, and pipeline-building advice from working sellers."},
+  {"title":"Indie Hackers","url":"https://www.indiehackers.com/","description":"Founder community focused on transparent revenue, bootstrapped products, and side-project growth."},
+  {"title":"Stacking the Bricks","url":"https://stackingthebricks.com/","description":"Amy Hoy & Alex Hillman's playbook for productized services and audience-first launches."},
+  {"title":"30x500 Sales Safari","url":"https://stackingthebricks.com/sales-safari-finds-the-right-words/","description":"Method for finding the exact pain points your audience already pays to solve."},
+  {"title":"Patrick McKenzie — Salary Negotiation","url":"https://www.kalzumeus.com/2012/01/23/salary-negotiation/","description":"Foundational essay on pricing and negotiating for skilled knowledge workers."},
+  {"title":"Patrick McKenzie — Don't Call Yourself a Programmer","url":"https://www.kalzumeus.com/2011/10/28/dont-call-yourself-a-programmer/","description":"Classic essay on positioning your skills around business value rather than craft labels."},
+  {"title":"Pricing Creativity (Blair Enns)","url":"https://www.winwithoutpitching.com/pricing-creativity/","description":"Pricing methodology specifically for creative and consulting professionals."},
+  {"title":"Win Without Pitching Manifesto","url":"https://www.winwithoutpitching.com/manifesto/","description":"Twelve proclamations that reframe how independents win consulting work."},
+  {"title":"The Mom Test (book)","url":"https://www.momtestbook.com/","description":"Rob Fitzpatrick's short, practical guide to running customer-validation conversations that don't lie to you."},
+  {"title":"The Lean Startup (book)","url":"https://theleanstartup.com/","description":"Eric Ries's framework for build-measure-learn loops and minimum viable products."},
+  {"title":"Company of One (book)","url":"https://ofone.co/","description":"Paul Jarvis's case for staying small on purpose — sustainable solo and micro-business design."},
+  {"title":"The E-Myth Revisited (book)","url":"https://www.michaelegerber.com/the-e-myth-revisited","description":"Why most small businesses fail and how to design a business that runs without you."},
+  {"title":"$100M Offers (Alex Hormozi)","url":"https://www.acquisition.com/books/100m-offers","description":"Tactical playbook for constructing offers people feel stupid saying no to."},
+  {"title":"SCORE Mentors","url":"https://www.score.org/","description":"Free mentoring from retired and active executives, plus templates for business and financial planning."},
+  {"title":"SBA Small Business Resources","url":"https://www.sba.gov/business-guide","description":"US Small Business Administration's plain-English guide covering legal structure, financing, and licenses."},
+  {"title":"IRS Self-Employed Tax Center","url":"https://www.irs.gov/businesses/small-businesses-self-employed","description":"Federal tax guidance for sole proprietors, LLCs, and contractors — quarterly estimates, deductions, and forms."},
+  {"title":"LegalZoom Business Formation","url":"https://www.legalzoom.com/business/business-formation","description":"Common starting point for forming an LLC or corporation and understanding the trade-offs."},
+  {"title":"Stripe Atlas Guides","url":"https://stripe.com/atlas/guides","description":"High-quality free guides on incorporation, equity, fundraising, and getting paid."},
+  {"title":"FreshBooks Self-Employed","url":"https://www.freshbooks.com/self-employed","description":"Lightweight invoicing and bookkeeping aimed at solo consultants and freelancers."},
+  {"title":"Calendly","url":"https://calendly.com/","description":"Free scheduling tool that removes friction from booking discovery and sales calls."},
+  {"title":"LinkedIn Sales Navigator","url":"https://business.linkedin.com/sales-solutions/sales-navigator","description":"Targeted prospecting tool useful for finding decision-makers in mid-market companies."},
+  {"title":"Hubspot CRM (Free)","url":"https://www.hubspot.com/products/crm","description":"Free CRM that's plenty for tracking your first 100 leads and deals."}
+]`;
 
     try {
       const response = await fetch(PROXY_URL, {
@@ -1385,10 +1445,12 @@ For resources, use real URLs that actually exist — prefer wellknown books (ama
       stepsList.appendChild(li);
     });
 
-    // Resources
+    // Resources — filter to allowlist (defense in depth against URL hallucination)
     const resList = document.getElementById('resourceList');
     resList.innerHTML = '';
-    (r.resources || []).forEach(res => {
+    const allowedUrls = (window.__RESOURCE_ALLOWLIST || []);
+    const filtered = (r.resources || []).filter(res => allowedUrls.length === 0 || allowedUrls.includes(res.url));
+    filtered.forEach(res => {
       const li = document.createElement('li');
       li.innerHTML = `
         <a href="${res.url}" target="_blank" class="resource-item">
