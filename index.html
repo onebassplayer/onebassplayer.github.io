@@ -1224,7 +1224,7 @@
   }
 
   /* ── ANALYSIS ─────────────────────────────────────────── */
-  async   /* ── RESOURCE ALLOWLIST (mirrors prompt library — used to filter LLM output) ─── */
+  /* ── RESOURCE ALLOWLIST (mirrors prompt library — used to filter LLM output) ─── */
   window.__RESOURCE_ALLOWLIST = [
     "https://www.reddit.com/r/consulting/",
     "https://www.reddit.com/r/Entrepreneur/",
@@ -1254,7 +1254,7 @@
     "https://www.hubspot.com/products/crm"
   ];
 
-  function runAnalysis() {
+  async function runAnalysis() {
     if (!validateStep(6)) return;
 
     // Hide steps, show loading
