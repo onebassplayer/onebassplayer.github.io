@@ -729,7 +729,35 @@
       }
       .hero h1 { font-size: 32px; }
     }
-  </style>
+  
+  /* ── Voice / Dictation ─────────────────────────── */
+  .mic-row { display:flex; gap:8px; align-items:flex-start; }
+  .mic-row textarea, .mic-row input { flex:1; min-width:0; }
+  .mic-btn {
+    flex-shrink:0;
+    width:40px; height:40px;
+    border-radius:50%;
+    border:2px solid var(--border);
+    background:transparent;
+    color:var(--muted);
+    font-size:18px;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .2s;
+    margin-top:2px;
+  }
+  .mic-btn:hover { border-color:var(--amber); color:var(--amber); }
+  .mic-btn.listening {
+    border-color:#e05252;
+    color:#e05252;
+    animation:mic-pulse 1s ease-in-out infinite;
+  }
+  @keyframes mic-pulse {
+    0%,100% { box-shadow:0 0 0 0 rgba(224,82,82,0.4); }
+    50%      { box-shadow:0 0 0 8px rgba(224,82,82,0); }
+  }
+  .mic-unsupported { display:none; }
+</style>
 </head>
 <body>
 
@@ -776,7 +804,7 @@
     <p class="card-hint">Your results will be sent here. No spam — just your plan.</p>
     <div class="field">
       <label>First name</label>
-      <input type="text" id="firstName" placeholder="Your first name" / oninput="hideError('step1Error')">
+      <div class="mic-row"><input type="text" id="firstName" placeholder="Your first name" / oninput="hideError('step1Error')"><button class="mic-btn" id="mic-firstName" type="button" title="Click to dictate" aria-label="Dictate first name">🎤</button></div>
     </div>
     <div class="field">
       <label>Email address</label>
@@ -825,7 +853,7 @@
     <h2>What have people actually paid you to do?</h2>
     <p class="card-hint">Think about the last 5 years. Not your job title — what specific things did people or companies pay for that you delivered?</p>
     <div class="field">
-      <textarea id="skillsInput" placeholder="e.g. Helped SaaS companies hire their first 10 sales reps. Led product launches. Built and managed remote teams. Closed enterprise deals. Wrote content that drove leads..." oninput="hideError('step3Error')"></textarea>
+      <div class="mic-row"><textarea id="skillsInput" placeholder="e.g. Helped SaaS companies hire their first 10 sales reps. Led product launches. Built and managed remote teams. Closed enterprise deals. Wrote content that drove leads..." oninput="hideError('step3Error')"></textarea><button class="mic-btn" id="mic-skillsInput" type="button" title="Click to dictate" aria-label="Dictate skills">🎤</button></div>
     </div>
     <div class="error-msg" id="step3Error">Please describe your skills before continuing.</div>
     <div class="card-nav">
@@ -859,7 +887,7 @@
     </div>
     <div class="field" style="margin-top:16px">
       <label>Tell me more (optional)</label>
-      <textarea id="validationDetail" placeholder="What happened? What did you try? What did people say?" style="min-height:80px" oninput="hideError('step4Error')"></textarea>
+      <div class="mic-row"><textarea id="validationDetail" placeholder="What happened? What did you try? What did people say?" style="min-height:80px" oninput="hideError('step4Error')"></textarea><button class="mic-btn" id="mic-validDetail" type="button" title="Click to dictate" aria-label="Dictate validation">🎤</button></div>
     </div>
     <div class="error-msg" id="step4Error">Please select an option.</div>
     <div class="card-nav">
@@ -918,13 +946,13 @@
     <div class="field">
       <label>Available savings / funds you'd use to build</label>
       <div class="dollar-wrap">
-        <input type="number" id="savingsInput" placeholder="0" min="0" step="any" oninput="calcRunway(); hideError('step6Error')" />
+        <div class="mic-row"><input type="number" id="savingsInput" placeholder="0" min="0" step="any" oninput="calcRunway(); hideError('step6Error')" /><button class="mic-btn" id="mic-savings" type="button" title="Click to dictate" aria-label="Dictate savings amount">🎤</button></div>
       </div>
     </div>
     <div class="field">
       <label>Your monthly personal expenses (everything)</label>
       <div class="dollar-wrap">
-        <input type="number" id="burnInput" placeholder="0" min="0" step="any" oninput="calcRunway(); hideError('step6Error')" />
+        <div class="mic-row"><input type="number" id="burnInput" placeholder="0" min="0" step="any" oninput="calcRunway(); hideError('step6Error')" /><button class="mic-btn" id="mic-burn" type="button" title="Click to dictate" aria-label="Dictate monthly expenses">🎤</button></div>
       </div>
     </div>
 
@@ -1476,6 +1504,82 @@ RESOURCE LIBRARY (only pick from these):
       setTimeout(() => { el.style.display = 'none'; }, 3000);
     });
   }
+
+
+// ── Voice / Dictation ──────────────────────────────────────
+(function initVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    // Hide all mic buttons silently — unsupported browser
+    document.querySelectorAll('.mic-btn').forEach(b => b.style.display = 'none');
+    return;
+  }
+
+  let activeRec = null;   // currently running SpeechRecognition instance
+  let activeBtn = null;   // button that started it
+
+  function stopActive() {
+    if (activeRec) { try { activeRec.stop(); } catch(e) {} activeRec = null; }
+    if (activeBtn) { activeBtn.classList.remove('listening'); activeBtn.title = 'Click to dictate'; activeBtn = null; }
+  }
+
+  function attachMic(btn, targetId, mode) {
+    // mode: 'append' for textareas, 'replace' for short text inputs, 'number' for numeric
+    btn.title = 'Click to dictate';
+    btn.addEventListener('click', function() {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      if (activeBtn === btn) { stopActive(); return; }  // toggle off
+      stopActive();  // stop any other active mic
+
+      const rec = new SR();
+      rec.lang = 'en-US';
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      rec.continuous = false;
+
+      activeRec = rec;
+      activeBtn = btn;
+      btn.classList.add('listening');
+      btn.title = 'Listening… click to stop';
+
+      rec.onresult = function(e) {
+        const transcript = e.results[0][0].transcript.trim();
+        if (mode === 'number') {
+          // Extract first number spoken
+          const num = transcript.replace(/[^0-9.]/g, '');
+          if (num) { target.value = num; target.dispatchEvent(new Event('input', {bubbles:true})); }
+        } else if (mode === 'append') {
+          const spacer = target.value && !target.value.endsWith(' ') ? ' ' : '';
+          target.value += spacer + transcript;
+          target.dispatchEvent(new Event('input', {bubbles:true}));
+        } else {
+          // replace
+          target.value = transcript;
+          target.dispatchEvent(new Event('input', {bubbles:true}));
+        }
+      };
+
+      rec.onerror = function(e) {
+        if (e.error !== 'aborted') console.warn('SpeechRecognition error:', e.error);
+        stopActive();
+      };
+
+      rec.onend = function() { stopActive(); };
+
+      try { rec.start(); } catch(err) { stopActive(); }
+    });
+  }
+
+  // Wire up all mic buttons once DOM is ready
+  attachMic(document.getElementById('mic-firstName'),    'firstName',       'replace');
+  attachMic(document.getElementById('mic-skillsInput'),  'skillsInput',     'append');
+  attachMic(document.getElementById('mic-validDetail'),  'validationDetail','append');
+  attachMic(document.getElementById('mic-constraintOther'),'constraintOther','replace');
+  attachMic(document.getElementById('mic-savings'),      'savingsInput',    'number');
+  attachMic(document.getElementById('mic-burn'),         'burnInput',       'number');
+})();
 </script>
 </body>
 </html>
