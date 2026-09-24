@@ -29,10 +29,10 @@
   <main>
     <nav><a href="/exit/">← Return to the Exit Planner</a></nav>
     <h1>Privacy Notice</h1>
-    <p class="small">Moonshot Exit Planner · Draft prepared September 23, 2026</p>
+    <p class="small">Moonshot Exit Planner · Draft updated September 24, 2026</p>
     <aside class="draft" role="note">
       <strong>Owner review required — not approved for publication</strong>
-      This draft leaves retention, deletion handling, and email follow-up choices open rather than making claims we could not verify. Do not merge or publish it until the decisions below are confirmed.
+      Submission email is not ready for production. The SMTP provider, delivery settings, retention details, and deletion handling still need verification. Do not merge or publish this notice until the decisions below are confirmed.
     </aside>
 
     <section class="card">
@@ -43,36 +43,39 @@
     <section class="card">
       <h2>What you enter</h2>
       <p><strong>Quick Plan:</strong> first name and email, employment situation and notes, accessible savings, monthly essential expenses, business-idea testing and notes, skills and experience, confidence, weekly time, and constraints.</p>
-      <p><strong>Deep Dive:</strong> an email field and a free-text conversation. The current page sends the conversation transcript when you request a plan, but does not include the email field in that request.</p>
+      <p><strong>Deep Dive:</strong> an email field and a free-text conversation. The email address is included in the submission email; it is not included in the AI planning request.</p>
       <p>Free-text answers can contain sensitive career or financial details. Share only what you are comfortable including.</p>
     </section>
 
     <section class="card">
       <h2>How the information moves</h2>
-      <p>When you request a Quick Plan, the page sends your first name, email, and assessment answers to Moonshot’s planning service hosted by Render. For Deep Dive, it sends the conversation transcript; the email field is not included in that request in the version reviewed.</p>
-      <p>The planning service is configured to forward accepted requests to Anthropic. In the version reviewed, the planner’s AI request is rejected by the service before it reaches Anthropic, so the page instead generates a fallback plan in your browser. This was checked on September 23, 2026 using test text, not personal information. If the model configuration changes, verify this explanation again.</p>
-      <p>The plan is displayed in your browser. The current planner code does not email the result.</p>
+      <p>For Quick Plan, the page sends your first name, email, and assessment answers to Moonshot’s planning service hosted by Render. For Deep Dive, it sends the conversation transcript to that service; the email field is not included in the AI planning request.</p>
+      <p>If you check the optional consent box before submitting either path, the page also sends the full submission—including the contact email and all Quick Plan answers or the full Deep Dive conversation—to the Render service for delivery to <a href="mailto:david@moonshotconsultingdc.com">david@moonshotconsultingdc.com</a>. The service is designed to send it using an SMTP provider configured by Moonshot Consulting. That provider has not yet been selected or configured in production. If email delivery is unavailable, you can clear the box and still request your plan without emailing Moonshot a copy.</p>
+      <p>The currently published page sends the model identifier <code>claude-opus-4-5</code>, which the proxy rejects before it reaches Anthropic; the browser then generates a fallback plan. This was reproduced on September 24, 2026 using synthetic text, not personal information. The unpublished website draft selects a model identifier accepted by the proxy. A synthetic request with that identifier reached Anthropic but received a <code>401 authentication_error</code> because the service API key was reported invalid. This does not confirm a successful AI-generated plan. The provider credentials must be corrected and the deployed planner flow retested before this notice is approved.</p>
+      <p>The generated plan is displayed in your browser; the email feature sends the submission, not the generated plan. Consent to send a submission does not subscribe you to marketing email.</p>
     </section>
 
     <section class="card">
       <h2>Storage, retention, and deletion</h2>
-      <p>The page code reviewed does not save these answers in browser storage, and the proxy code reviewed does not write them to an application database. This does not establish what the hosting services or any AI provider record in their logs or retain under their account settings.</p>
+      <p>The page code reviewed does not save these answers in browser storage, and the proxy code reviewed does not write submissions to an application database. If you consent, the SMTP provider processes the message and a copy is delivered to the recipient mailbox. The provider’s and mailbox’s access, security, and retention settings have not been verified. Render or AI-provider logs may also be subject to their service settings.</p>
+      <p>The unpublished proxy draft adds shared rate limiting using a Redis-compatible service. Its keys contain a SHA-256 fingerprint of the resolved client IP and expire with the applicable rate-limit window (up to one hour); raw answer or submission content is not written to that store. These limits will not be active until the shared store and trusted Render proxy-hop setting are configured. Application error logs avoid recording prompts and submission contents, but Render access-log and Anthropic account retention settings remain outside the code and have not been verified.</p>
       <p>No retention period or working deletion-request process has been verified. This notice must not promise a storage period, deletion outcome, or security control until those details are checked and approved.</p>
     </section>
 
     <section class="card">
       <h2>Email and follow-up</h2>
-      <p>The Quick Plan currently includes the name and email in its request to the planning service. The Deep Dive requires an email field, but the current code does not send that field with the conversation. The page says Moonshot may follow up, but its current code does not send follow-up email or call Mailchimp.</p>
-      <p>The proxy has a separate Mailchimp subscription route that marks an address “subscribed,” but the Exit Planner page does not call it. Whether the assessment should trigger personal follow-up, marketing email, or a Mailchimp subscription needs an explicit decision and a matching user choice before that flow is added.</p>
+      <p>The optional submission checkbox authorizes emailing the full submission to Moonshot Consulting at <a href="mailto:david@moonshotconsultingdc.com">david@moonshotconsultingdc.com</a>. You can leave it unchecked and still request a plan. It does not subscribe you to marketing emails, and the page does not call Mailchimp for this submission.</p>
+      <p>Email delivery requires SMTP environment settings on the Render service. No SMTP provider or production credentials are configured by this draft; credentials must be stored only in the service’s private environment settings, never in the webpage or source control.</p>
     </section>
 
     <section class="decision" aria-labelledby="decisions-title">
       <strong id="decisions-title">Decisions required before publication</strong>
       <ul>
+        <li>Select an SMTP provider, set its sender and private credentials in Render, then test delivery to the stated inbox without using real customer information.</li>
+        <li>Verify the submission inbox is active and monitored, and approve how long email copies are retained and how deletion requests will be handled across the SMTP provider and mailbox.</li>
         <li>Confirm and document retention settings for Render request/service logs and Anthropic processing; do not infer these from application source code.</li>
-        <li>Confirm the privacy inbox is active and monitored, and verify who can fulfill deletion requests across any services that hold the data.</li>
-        <li>Decide whether email is for plan-related personal follow-up only or marketing too, and whether planner submissions should enter Mailchimp. If yes, define a clear opt-in and unsubscribe path first.</li>
-        <li>Resolve the planner/proxy model mismatch and verify the provider path before describing successful AI-generated results to users.</li>
+        <li>Confirm the separate privacy inbox is active and monitored, and verify who can fulfill deletion requests across any services that hold the data.</li>
+        <li>Correct the Anthropic API key in Render, then test the draft model identifier through the planner and proxy with synthetic input before publication.</li>
       </ul>
     </section>
 
