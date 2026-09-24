@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Privacy Notice Draft | Moonshot Exit Planner</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1020;--panel:#151d33;--line:#34405f;--text:#f4f6ff;--muted:#c0c9df;--accent:#b8c1ff;--warning:#ffe2a2}
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(145deg,#0a0f1d,#151b30 55%,#0a0f1d);color:var(--text);font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    main{width:min(820px,100% - 32px);margin:0 auto;padding:40px 0 72px}
+    nav{margin-bottom:28px}
+    a{color:var(--accent);text-underline-offset:3px}
+    h1{font-size:clamp(34px,6vw,52px);line-height:1.08;letter-spacing:-.04em;margin:0 0 12px}
+    h2{font-size:22px;line-height:1.25;margin:30px 0 10px}
+    p,li{color:var(--muted)}
+    .draft,.decision{border:1px solid #876b35;background:rgba(109,77,20,.2);border-radius:14px;padding:16px 18px;color:var(--warning)}
+    .draft strong,.decision strong{display:block;margin-bottom:6px;color:#fff0c8}
+    .card{margin-top:18px;padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(21,29,51,.88)}
+    ul{padding-left:22px}
+    li+li{margin-top:8px}
+    .small{font-size:14px}
+    footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--line);font-size:14px}
+    @media(max-width:560px){main{padding-top:26px}.card{padding:18px}h2{font-size:20px}}
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="/exit/">← Return to the Exit Planner</a></nav>
+    <h1>Privacy Notice</h1>
+    <p class="small">Moonshot Exit Planner · Draft updated September 24, 2026</p>
+    <aside class="draft" role="note">
+      <strong>Owner review required — not approved for publication</strong>
+      Submission email is not ready for production. The SMTP provider, delivery settings, retention details, and deletion handling still need verification. Do not merge or publish this notice until the decisions below are confirmed.
+    </aside>
+
+    <section class="card">
+      <h2>Who operates this planner</h2>
+      <p>This Exit Planner is operated by Moonshot Consulting. For privacy questions or to request deletion, email <a href="mailto:info@moonshotconsultingdc.com">info@moonshotconsultingdc.com</a>.</p>
+    </section>
+
+    <section class="card">
+      <h2>What you enter</h2>
+      <p><strong>Quick Plan:</strong> first name and email, employment situation and notes, accessible savings, monthly essential expenses, business-idea testing and notes, skills and experience, confidence, weekly time, and constraints.</p>
+      <p><strong>Deep Dive:</strong> an email field and a free-text conversation. The email address is included in the submission email; it is not included in the AI planning request.</p>
+      <p>Free-text answers can contain sensitive career or financial details. Share only what you are comfortable including.</p>
+    </section>
+
+    <section class="card">
+      <h2>How the information moves</h2>
+      <p>For Quick Plan, the page sends your first name, email, and assessment answers to Moonshot’s planning service hosted by Render. For Deep Dive, it sends the conversation transcript to that service; the email field is not included in the AI planning request.</p>
+      <p>If you check the optional consent box before submitting either path, the page also sends the full submission—including the contact email and all Quick Plan answers or the full Deep Dive conversation—to the Render service for delivery to <a href="mailto:david@moonshotconsultingdc.com">david@moonshotconsultingdc.com</a>. The service is designed to send it using an SMTP provider configured by Moonshot Consulting. That provider has not yet been selected or configured in production. If email delivery is unavailable, you can clear the box and still request your plan without emailing Moonshot a copy.</p>
+      <p>The currently published page sends the model identifier <code>claude-opus-4-5</code>, which the proxy rejects before it reaches Anthropic; the browser then generates a fallback plan. This was reproduced on September 24, 2026 using synthetic text, not personal information. The unpublished website draft selects a model identifier accepted by the proxy. A synthetic request with that identifier reached Anthropic but received a <code>401 authentication_error</code> because the service API key was reported invalid. This does not confirm a successful AI-generated plan. The provider credentials must be corrected and the deployed planner flow retested before this notice is approved.</p>
+      <p>The generated plan is displayed in your browser; the email feature sends the submission, not the generated plan. Consent to send a submission does not subscribe you to marketing email.</p>
+    </section>
+
+    <section class="card">
+      <h2>Storage, retention, and deletion</h2>
+      <p>The page code reviewed does not save these answers in browser storage, and the proxy code reviewed does not write submissions to an application database. If you consent, the SMTP provider processes the message and a copy is delivered to the recipient mailbox. The provider’s and mailbox’s access, security, and retention settings have not been verified. Render or AI-provider logs may also be subject to their service settings.</p>
+      <p>The unpublished proxy draft adds shared rate limiting using a Redis-compatible service. Its keys contain a SHA-256 fingerprint of the resolved client IP and expire with the applicable rate-limit window (up to one hour); raw answer or submission content is not written to that store. These limits will not be active until the shared store and trusted Render proxy-hop setting are configured. Application error logs avoid recording prompts and submission contents, but Render access-log and Anthropic account retention settings remain outside the code and have not been verified.</p>
+      <p>No retention period or working deletion-request process has been verified. This notice must not promise a storage period, deletion outcome, or security control until those details are checked and approved.</p>
+    </section>
+
+    <section class="card">
+      <h2>Email and follow-up</h2>
+      <p>The optional submission checkbox authorizes emailing the full submission to Moonshot Consulting at <a href="mailto:david@moonshotconsultingdc.com">david@moonshotconsultingdc.com</a>. You can leave it unchecked and still request a plan. It does not subscribe you to marketing emails, and the page does not call Mailchimp for this submission.</p>
+      <p>Email delivery requires SMTP environment settings on the Render service. No SMTP provider or production credentials are configured by this draft; credentials must be stored only in the service’s private environment settings, never in the webpage or source control.</p>
+    </section>
+
+    <section class="decision" aria-labelledby="decisions-title">
+      <strong id="decisions-title">Decisions required before publication</strong>
+      <ul>
+        <li>Select an SMTP provider, set its sender and private credentials in Render, then test delivery to the stated inbox without using real customer information.</li>
+        <li>Verify the submission inbox is active and monitored, and approve how long email copies are retained and how deletion requests will be handled across the SMTP provider and mailbox.</li>
+        <li>Confirm and document retention settings for Render request/service logs and Anthropic processing; do not infer these from application source code.</li>
+        <li>Confirm the separate privacy inbox is active and monitored, and verify who can fulfill deletion requests across any services that hold the data.</li>
+        <li>Correct the Anthropic API key in Render, then test the draft model identifier through the planner and proxy with synthetic input before publication.</li>
+      </ul>
+    </section>
+
+    <footer><a href="/exit/">Return to the Moonshot Exit Planner</a></footer>
+  </main>
+</body>
+</html>
